@@ -1,0 +1,515 @@
+/* Product List Styles */
+.product-admin {
+  padding: 20px;
+  background-color: #f8f9fa;
+  min-height: 100vh;
+}
+
+.product-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  padding: 20px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.product-header h1 {
+  color: #2c3e50;
+  margin: 0;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.product-count {
+  color: #6c757d;
+  font-size: 18px;
+  font-weight: normal;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.view-mode-toggle {
+  display: flex;
+  gap: 10px;
+  background: #f8f9fa;
+  padding: 4px;
+  border-radius: 6px;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+/* Table Styles */
+.product-table-container {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.product-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.product-table th {
+  background-color: #34495e;
+  color: white;
+  font-weight: 600;
+  padding: 12px 16px;
+  text-align: left;
+  border-bottom: 1px solid #2c3e50;
+}
+
+.product-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #ecf0f1;
+  vertical-align: middle;
+}
+
+.product-table tr:hover {
+  background-color: #f8f9fa;
+}
+
+/* Column Specific Styles */
+.product-id {
+  font-weight: 600;
+  color: #495057;
+  text-align: center;
+}
+
+.product-name-main {
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 4px;
+}
+
+.product-slug {
+  color: #6c757d;
+  font-size: 12px;
+  font-family: monospace;
+}
+
+.product-brand {
+  color: #495057;
+  font-weight: 500;
+}
+
+.product-price-root {
+  color: #6c757d;
+  text-decoration: line-through;
+  text-align: right;
+}
+
+.product-price-sale {
+  text-align: right;
+  font-weight: 600;
+}
+
+.sale-price {
+  color: #e74c3c;
+  font-size: 15px;
+  display: block;
+}
+
+.discount-badge {
+  background: #e74c3c;
+  color: white;
+  padding: 2px 6px;
+  border-radius: 10px;
+  font-size: 10px;
+  font-weight: 600;
+  margin-left: 5px;
+}
+
+.product-qty {
+  text-align: center;
+}
+
+.qty-badge {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  background: #d4edda;
+  color: #155724;
+  min-width: 40px;
+}
+
+.qty-badge.low-stock {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.qty-badge.out-of-stock {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.product-status {
+  text-align: center;
+}
+
+/* Image Styles */
+.product-image {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+}
+
+.no-image {
+  width: 60px;
+  height: 60px;
+  background: #f8f9fa;
+  border: 1px dashed #ddd;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #95a5a6;
+  font-size: 9px;
+}
+
+/* Status Badge */
+.status-badge {
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.status-badge.active {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.status-badge.inactive {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+/* Status Toggle */
+.status-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  padding: 4px;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.status-toggle.active {
+  color: #27ae60;
+}
+
+.status-toggle.inactive {
+  color: #e74c3c;
+}
+
+.status-toggle:hover {
+  transform: scale(1.1);
+}
+
+/* Actions */
+.actions {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+}
+
+.actions .btn {
+  padding: 6px 8px;
+  border-radius: 4px;
+  font-size: 14px;
+  min-width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-view {
+  background-color: #3498db;
+  color: white;
+}
+
+.btn-view:hover {
+  background-color: #2980b9;
+}
+
+.btn-edit {
+  background-color: #f39c12;
+  color: white;
+}
+
+.btn-edit:hover {
+  background-color: #e67e22;
+}
+
+.btn-delete {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.btn-delete:hover {
+  background-color: #c0392b;
+}
+
+.btn-restore {
+  background-color: #27ae60;
+  color: white;
+}
+
+.btn-restore:hover {
+  background-color: #219a52;
+}
+
+.btn-force-delete {
+  background-color: #c0392b;
+  color: white;
+}
+
+.btn-force-delete:hover {
+  background-color: #a93226;
+}
+
+/* Buttons */
+.btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  font-family: inherit;
+}
+
+.btn-primary {
+  background-color: #3498db;
+  color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: #2980b9;
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  background-color: #95a5a6;
+  color: white;
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background-color: #7f8c8d;
+}
+
+/* Loading and Error States */
+.loading {
+  text-align: center;
+  padding: 40px 20px;
+  font-size: 18px;
+  color: #3498db;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #f3f4f6;
+  border-top: 4px solid #3498db;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.error-container {
+  text-align: center;
+  padding: 40px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.error-message {
+  background: #f8d7da;
+  color: #721c24;
+  padding: 15px 20px;
+  border-radius: 8px;
+  border: 1px solid #f5c6cb;
+  max-width: 500px;
+}
+
+.no-data {
+  text-align: center;
+  padding: 60px 20px;
+  color: #6c757d;
+  font-size: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.mt-2 {
+  margin-top: 10px;
+}
+
+/* Pagination */
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+.pagination .btn {
+  min-width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Debug Info */
+.debug-info {
+  margin-top: 20px;
+  padding: 15px;
+  background: #e9ecef;
+  border-radius: 6px;
+  font-size: 12px;
+  color: #6c757d;
+}
+
+.debug-info summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+
+/* Animations */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .product-admin {
+    padding: 10px;
+  }
+  
+  .product-header {
+    flex-direction: column;
+    gap: 15px;
+    align-items: stretch;
+  }
+  
+  .header-actions {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .view-mode-toggle {
+    justify-content: center;
+  }
+  
+  .action-buttons {
+    justify-content: center;
+  }
+  
+  .product-table-container {
+    overflow-x: auto;
+  }
+  
+  .product-table {
+    min-width: 900px;
+  }
+  
+  .actions {
+    flex-direction: column;
+    gap: 4px;
+  }
+  
+  .actions .btn {
+    min-width: 28px;
+    height: 28px;
+    font-size: 12px;
+  }
+  
+  .pagination {
+    gap: 4px;
+  }
+  
+  .pagination .btn {
+    min-width: 35px;
+    height: 35px;
+    font-size: 12px;
+    padding: 6px;
+  }
+}
+
+/* Disabled states */
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+/* FIX LỆCH */
+/* ✅ Căn giữa phân trang và giữ khoảng cách đều */
+.pagination {
+  display: flex;
+  justify-content: center;  /* Căn giữa theo chiều ngang */
+  align-items: center;       /* Căn giữa theo chiều dọc */
+  gap: 6px;                  /* Khoảng cách giữa các nút */
+  margin-top: 20px;          /* Cách danh sách một chút */
+  flex-wrap: wrap;           /* Đảm bảo không bị tràn khi nhỏ màn hình */
+}
+
+/* ✅ Nút phân trang thống nhất */
+.pagination .btn {
+  min-width: 38px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+/* ✅ Nút đang active nổi bật */
+.pagination .btn-primary {
+  background-color: #0d6efd;
+  color: #fff;
+}
+
+/* ✅ Nút disabled nhạt đi */
+.pagination .btn[disabled] {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

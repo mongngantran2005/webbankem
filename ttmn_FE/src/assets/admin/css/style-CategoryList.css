@@ -1,0 +1,373 @@
+/* Category List Container */
+.category-admin {
+  padding: 20px;
+  background-color: #f8f9fa;
+  min-height: 100vh;
+}
+
+/* Header Section */
+.category-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  padding: 20px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.category-header h1 {
+  color: #2c3e50;
+  margin: 0;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.view-mode-toggle {
+  display: flex;
+  gap: 10px;
+  background: #f8f9fa;
+  padding: 4px;
+  border-radius: 6px;
+}
+
+/* Button Styles */
+.btn {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.btn-primary {
+  background-color: #3498db;
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #2980b9;
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  background-color: #95a5a6;
+  color: white;
+}
+
+.btn-secondary:hover {
+  background-color: #7f8c8d;
+}
+
+.btn-back {
+  background-color: #95a5a6;
+  color: white;
+}
+
+.btn-back:hover {
+  background-color: #7f8c8d;
+}
+
+/* Table Container */
+.category-table-container {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  overflow: hidden;
+}
+
+/* Table Styles */
+.category-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.category-table th {
+  background-color: #34495e;
+  color: white;
+  font-weight: 600;
+  padding: 12px 16px;
+  text-align: left;
+  border-bottom: 1px solid #2c3e50;
+}
+
+.category-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #ecf0f1;
+  vertical-align: middle;
+}
+
+.category-table tr:hover {
+  background-color: #f8f9fa;
+}
+
+.category-table tr:last-child td {
+  border-bottom: none;
+}
+
+/* Column Specific Styles */
+.category-name {
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.category-slug {
+  color: #7f8c8d;
+  font-family: monospace;
+  font-size: 13px;
+}
+
+.category-desc {
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #666;
+}
+
+/* Image Styles */
+.category-image {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+}
+
+.no-image {
+  width: 50px;
+  height: 50px;
+  background: #f8f9fa;
+  border: 1px dashed #ddd;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #95a5a6;
+  font-size: 10px;
+}
+
+/* Status Badge */
+.status-badge {
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.status-badge.active {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.status-badge.inactive {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+/* Status Toggle Button */
+.status-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+  padding: 4px;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.status-toggle.active {
+  color: #27ae60;
+}
+
+.status-toggle.inactive {
+  color: #e74c3c;
+}
+
+.status-toggle:hover {
+  transform: scale(1.1);
+}
+
+/* Actions Column */
+.actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-start;
+}
+
+.actions .btn {
+  padding: 6px 8px;
+  border-radius: 4px;
+  font-size: 16px;
+  min-width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-view {
+  background-color: #3498db;
+  color: white;
+}
+
+.btn-view:hover {
+  background-color: #2980b9;
+}
+
+.btn-edit {
+  background-color: #f39c12;
+  color: white;
+}
+
+.btn-edit:hover {
+  background-color: #e67e22;
+}
+
+.btn-delete {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.btn-delete:hover {
+  background-color: #c0392b;
+}
+
+.btn-restore {
+  background-color: #27ae60;
+  color: white;
+}
+
+.btn-restore:hover {
+  background-color: #219a52;
+}
+
+.btn-force-delete {
+  background-color: #c0392b;
+  color: white;
+}
+
+.btn-force-delete:hover {
+  background-color: #a93226;
+}
+
+/* No Data Message */
+.no-data {
+  text-align: center;
+  padding: 40px 20px;
+  color: #7f8c8d;
+  font-size: 16px;
+  background: #f8f9fa;
+}
+
+/* Loading and Error States */
+.loading {
+  text-align: center;
+  padding: 40px 20px;
+  font-size: 18px;
+  color: #3498db;
+}
+
+.error {
+  text-align: center;
+  padding: 40px 20px;
+  font-size: 16px;
+  color: #e74c3c;
+  background: #f8d7da;
+  border-radius: 8px;
+  margin: 20px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .category-admin {
+    padding: 10px;
+  }
+  
+  .category-header {
+    flex-direction: column;
+    gap: 15px;
+    align-items: stretch;
+  }
+  
+  .header-actions {
+    flex-direction: column;
+  }
+  
+  .view-mode-toggle {
+    justify-content: center;
+  }
+  
+  .category-table-container {
+    overflow-x: auto;
+  }
+  
+  .category-table {
+    min-width: 800px;
+  }
+  
+  .actions {
+    flex-direction: column;
+    gap: 4px;
+  }
+  
+  .actions .btn {
+    min-width: 28px;
+    height: 28px;
+    font-size: 14px;
+  }
+}
+
+/* Animation for smooth transitions */
+.category-table tr {
+  transition: background-color 0.3s ease;
+}
+
+.btn {
+  transition: all 0.3s ease;
+}
+
+/* Focus states for accessibility */
+.btn:focus {
+  outline: 2px solid #3498db;
+  outline-offset: 2px;
+}
+
+.status-toggle:focus {
+  outline: 2px solid #3498db;
+  outline-offset: 2px;
+}
+
+/* Scrollbar styling for table container */
+.category-table-container::-webkit-scrollbar {
+  height: 8px;
+}
+
+.category-table-container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.category-table-container::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
+.category-table-container::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}

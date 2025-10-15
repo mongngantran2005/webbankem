@@ -1,0 +1,305 @@
+/* ===================================
+   🌸 HEADER & NAVIGATION STYLES
+   =================================== */
+
+/* 🎨 Màu chủ đạo */
+:root {
+  --primary-color: #ff4d8d; /* Hồng đậm */
+  --secondary-color: #5a9bd5; /* Xanh dương nhạt */
+  --accent-color: #ff9c33; /* Cam nhấn */
+  --text-color: #333333;
+  --border-color: #e0e0e0;
+  --background-light: #f8f9fa;
+}
+
+/* =============================
+   🌸 HEADER TỔNG THỂ
+   ============================= */
+.header {
+  background-color: #fff;
+  font-family: "Arial", sans-serif;
+  border-bottom: 1px solid var(--border-color);
+  z-index: 1000;
+  padding: 15px 0; /* 🔥 Tăng chiều cao header */
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.05);
+}
+
+.header .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* 🍦 Logo / Thương hiệu */
+.brand-text {
+  color: var(--primary-color);
+  font-size: 2rem; /* To hơn */
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* =============================
+   🌸 THANH TÌM KIẾM
+   ============================= */
+.search-container {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.search-container form {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 450px;
+}
+
+.search-container .form-control {
+  border-radius: 25px 0 0 25px;
+  border: 2px solid var(--border-color);
+  border-right: none;
+  padding: 10px 18px;
+  font-size: 15px;
+  transition: all 0.3s ease;
+  height: 45px;
+}
+
+.search-container .form-control:focus {
+  box-shadow: none;
+  border-color: var(--primary-color);
+}
+
+.search-container .btn {
+  background: var(--primary-color);
+  color: white;
+  border: 2px solid var(--primary-color);
+  border-radius: 0 25px 25px 0;
+  padding: 0 18px;
+  transition: all 0.3s ease;
+  height: 45px;
+}
+
+.search-container .btn:hover {
+  background: #ff2f73;
+  border-color: #ff2f73;
+}
+
+/* =============================
+   🌸 USER ACTIONS (Login, Logout, Cart)
+   ============================= */
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.header-actions span {
+  color: var(--text-color);
+  font-size: 15px;
+}
+
+.header-actions b {
+  color: var(--primary-color);
+}
+
+.header-actions .btn {
+  font-size: 14px;
+  border-radius: 25px;
+  padding: 8px 15px;
+  transition: all 0.3s ease;
+}
+
+.header-actions .btn:hover {
+  transform: translateY(-1px);
+}
+
+/* =============================
+   🌸 NAVIGATION MENU
+   ============================= */
+.navbar {
+  border-top: 1px solid var(--border-color);
+}
+
+.navbar-nav .nav-link {
+  color: var(--text-color);
+  font-weight: 500;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  padding: 10px 15px;
+  transition: all 0.3s ease;
+}
+
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link.active {
+  color: var(--primary-color);
+  font-weight: bold;
+}
+
+/* =============================
+   🌸 DROPDOWN MENU
+   ============================= */
+.dropdown-menu {
+  border: none;
+  border-top: 3px solid var(--primary-color);
+  box-shadow: 0 4px 20px rgba(255, 107, 157, 0.15);
+  border-radius: 10px;
+  overflow: hidden;
+  padding: 0;
+}
+
+.dropdown-item {
+  padding: 10px 20px;
+  color: var(--text-color);
+  transition: all 0.3s ease;
+  border-bottom: 1px solid var(--border-color);
+  background: white;
+}
+
+.dropdown-item:last-child {
+  border-bottom: none;
+}
+
+.dropdown-item:hover {
+  background-color: rgba(255, 107, 157, 0.08);
+  color: var(--primary-color);
+  padding-left: 25px;
+}
+
+/* Submenu */
+.dropdown-submenu {
+  position: absolute;
+  top: 0;
+  left: 100%;
+  display: none;
+  margin-left: 1px;
+}
+
+.dropdown-menu li:hover .dropdown-submenu {
+  display: block;
+}
+
+/* Hiệu ứng mũi tên */
+.dropdown-toggle {
+  cursor: pointer;
+  position: relative;
+}
+
+.dropdown-toggle::after {
+  margin-left: 5px;
+  transition: transform 0.3s ease;
+}
+
+.dropdown:hover .dropdown-toggle::after {
+  transform: rotate(180deg);
+}
+
+/* =============================
+   🌸 DỊCH VỤ HỖ TRỢ DƯỚI HEADER
+   ============================= */
+.service-bar {
+  background-color: #fff;
+  border-bottom: 1px solid var(--border-color);
+  padding: 15px 0;
+}
+
+.service-bar .container {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  text-align: center;
+}
+
+.service-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--text-color);
+}
+
+.service-item i {
+  font-size: 26px;
+  color: var(--primary-color);
+}
+
+.service-item strong {
+  display: block;
+  color: var(--primary-color);
+  font-size: 15px;
+}
+
+.service-item span {
+  font-size: 14px;
+  color: #666;
+}
+
+/* =============================
+   🌸 BREADCRUMB
+   ============================= */
+.breadcrumb-container {
+  background: var(--background-light);
+  border-bottom: 1px solid var(--border-color);
+  padding: 10px 0;
+}
+
+.breadcrumb {
+  font-size: 0.85rem;
+  margin-bottom: 0;
+}
+
+.breadcrumb-item a {
+  color: var(--primary-color);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.breadcrumb-item.active {
+  color: var(--text-color);
+  font-weight: 500;
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+  content: ">";
+  color: var(--primary-color);
+  font-weight: bold;
+  padding: 0 5px;
+}
+
+/* =============================
+   🌸 RESPONSIVE DESIGN
+   ============================= */
+@media (max-width: 768px) {
+  .header .container {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .search-container {
+    order: 3;
+    width: 100%;
+    margin: 10px 0 !important;
+  }
+
+  .navbar-nav {
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .nav-link {
+    margin: 5px !important;
+    font-size: 0.8rem;
+  }
+
+  .header-actions {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .service-bar .container {
+    flex-direction: column;
+    gap: 10px;
+  }
+}

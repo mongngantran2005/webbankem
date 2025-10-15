@@ -1,0 +1,198 @@
+.order-list-page {
+  padding: 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.page-title {
+  color: #2c3e50;
+  margin-bottom: 24px;
+  font-size: 28px;
+  font-weight: 600;
+  border-bottom: 2px solid #3498db;
+  padding-bottom: 10px;
+}
+
+/* Trạng thái loading và error */
+.loading-state {
+  text-align: center;
+  padding: 40px;
+  font-size: 18px;
+  color: #3498db;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.error-state {
+  text-align: center;
+  padding: 40px;
+  font-size: 18px;
+  color: #e74c3c;
+  background: #fdf2f2;
+  border-radius: 8px;
+  border: 1px solid #e74c3c;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: #7f8c8d;
+  font-size: 18px;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+/* Wrapper cho bảng */
+.table-wrapper {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.order-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+/* Header bảng */
+.order-table th {
+  background: #34495e;
+  color: white;
+  padding: 16px 12px;
+  text-align: left;
+  font-weight: 600;
+  border-bottom: 2px solid #2980b9;
+}
+
+/* Ô trong bảng */
+.order-table td {
+  padding: 16px 12px;
+  border-bottom: 1px solid #ecf0f1;
+  vertical-align: top;
+}
+
+/* Hiệu ứng hover cho hàng */
+.order-table tbody tr:hover {
+  background: #f8f9fa;
+}
+
+.order-table tbody tr:nth-child(even) {
+  background: #fafbfc;
+}
+
+.order-table tbody tr:nth-child(even):hover {
+  background: #f1f3f4;
+}
+
+/* Thông tin khách hàng */
+.customer-info {
+  line-height: 1.5;
+}
+
+.customer-info strong {
+  color: #2c3e50;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.customer-info div {
+  color: #7f8c8d;
+  font-size: 13px;
+}
+
+/* Danh sách sản phẩm */
+.product-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  max-height: 120px;
+  overflow-y: auto;
+}
+
+.product-list li {
+  padding: 6px 0;
+  border-bottom: 1px solid #f1f3f4;
+  font-size: 13px;
+}
+
+.product-list li:last-child {
+  border-bottom: none;
+}
+
+.price {
+  color: #27ae60;
+  font-weight: 600;
+}
+
+/* Dropdown trạng thái */
+.status-dropdown {
+  padding: 8px 12px;
+  border: 1px solid #bdc3c7;
+  border-radius: 4px;
+  background: white;
+  font-size: 13px;
+  cursor: pointer;
+  min-width: 160px;
+  transition: all 0.2s;
+}
+
+.status-dropdown:hover {
+  border-color: #3498db;
+}
+
+.status-dropdown:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+/* Nút xem chi tiết */
+.btn-view {
+  display: inline-block;
+  padding: 8px 16px;
+  background: #3498db;
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+  font-size: 13px;
+  transition: all 0.2s;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-view:hover {
+  background: #2980b9;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+  .order-list-page {
+    padding: 15px;
+  }
+  
+  .table-wrapper {
+    overflow-x: auto;
+  }
+  
+  .order-table {
+    min-width: 1000px;
+  }
+}
+
+@media (max-width: 768px) {
+  .page-title {
+    font-size: 24px;
+    text-align: center;
+  }
+  
+  .order-table th,
+  .order-table td {
+    padding: 12px 8px;
+    font-size: 13px;
+  }
+}

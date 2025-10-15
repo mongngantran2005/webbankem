@@ -1,0 +1,223 @@
+import { useEffect, useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+
+function Checkout() {
+  const [cart, setCart] = useState([]);
+  const [user, setUser] = useState(null);
+  const [address, setAddress] = useState("");
+  const [phone, setPhone] = useState("");
+  const [note, setNote] = useState("");
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+    setUser(storedUser);
+
+    // 🟩 Nếu có sản phẩm truyền qua state (mua ngay)
+    if (location.state && location.state.product) {
+      const { product } = location.state;
+      setCart([
+        {
+          ...product,
+          qty: 1,
+        },
+      ]);
+    } else {
+      // 🟦 Nếu không có, lấy giỏ hàng từ localStorage
+      const storedCart = JSON.parse(localStorage.getItem("cart")) || [];
+      setCart(storedCart);
+    }
+  }, [location.state]);
+
+  const subtotal = cart.reduce(
+    (sum, item) => sum + item.qty * (item.price_sale || item.price_root),
+    0
+  );
+  const shippingFee = 30000;
+  const discount = 0;
+  const total = subtotal + shippingFee - discount;
+
+  const handleCheckout = async () => {
+    if (!user) {
+      alert("Vui lòng đăng nhập để thanh toán!");
+      navigate("/login");
+      return;
+    }
+    if (!address || !phone) {
+      alert("Vui lòng nhập đầy đủ thông tin giao hàng!");
+      return;
+    }
+
+    try {
+      const res = await fetch("http://127.0.0.1:8000/api/checkout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify({
+          user_id: user.id,
+          address,
+          phone,
+          note,
+          total,
+          items: cart,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        alert("🎉 Đặt hàng thành công! Đơn hàng đang được xử lý.");
+        // Nếu là mua nhiều sản phẩm thì xoá giỏ hàng
+        if (!location.state?.product) {
+          localStorage.removeItem("cart");
+          window.dispatchEvent(new Event("cartUpdated"));
+        }
+        navigate("/");
+      } else {
+        alert("❌ Thanh toán thất bại, vui lòng thử lại.");
+      }
+    } catch (error) {
+      console.error("Lỗi khi thanh toán:", error);
+      alert("Có lỗi xảy ra khi gửi đơn hàng!");
+    }
+  };
+
+  if (cart.length === 0) {
+    return (
+      <div className="container py-5 text-center">
+        <h4>Giỏ hàng trống</h4>
+        <a href="/" className="btn btn-outline-primary mt-3">
+          Mua sắm ngay
+        </a>
+      </div>
+    );
+  }
+
+  return (
+    <div className="container py-5">
+      <h3 className="text-center mb-4 fw-bold">Thông Tin Giao Hàng</h3>
+
+      {/* Form thông tin giao hàng */}
+      <div className="row mb-5">
+        <div className="col-md-6 mb-3">
+          <label className="form-label fw-semibold">Họ tên:</label>
+          <input
+            type="text"
+            className="form-control"
+            value={user?.name || ""}
+            disabled
+          />
+        </div>
+        <div className="col-md-6 mb-3">
+          <label className="form-label fw-semibold">Số điện thoại:</label>
+          <input
+            type="text"
+            className="form-control"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+            placeholder="Nhập số điện thoại"
+          />
+        </div>
+        <div className="col-md-6 mb-3">
+          <label className="form-label fw-semibold">Địa chỉ:</label>
+          <input
+            type="text"
+            className="form-control"
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
+            placeholder="Nhập địa chỉ giao hàng"
+          />
+        </div>
+        <div className="col-md-6 mb-3">
+          <label className="form-label fw-semibold">Ghi chú:</label>
+          <textarea
+            className="form-control"
+            rows="1"
+            value={note}
+            onChange={(e) => setNote(e.target.value)}
+            placeholder="Ghi chú thêm (nếu có)..."
+          ></textarea>
+        </div>
+      </div>
+
+      {/* Chi tiết sản phẩm */}
+      <h4 className="text-center mb-3">
+        🛒 <span className="fw-bold">Chi tiết sản phẩm</span>
+      </h4>
+      <div className="table-responsive">
+        <table className="table table-bordered align-middle text-center">
+          <thead className="table-light">
+            <tr>
+              <th>STT</th>
+              <th>Hình ảnh</th>
+              <th>Sản phẩm</th>
+              <th>Giá</th>
+              <th>Số lượng</th>
+              <th>Thành tiền</th>
+            </tr>
+          </thead>
+          <tbody>
+            {cart.map((item, index) => (
+              <tr key={item.id}>
+                <td>{index + 1}</td>
+                <td>
+                  <img
+                    src={`http://127.0.0.1:8000/uploads/products/${item.thumbnail}`}
+                    alt={item.name}
+                    style={{
+                      width: "60px",
+                      height: "60px",
+                      objectFit: "cover",
+                      borderRadius: "6px",
+                    }}
+                  />
+                </td>
+                <td>{item.name}</td>
+                <td>
+                  {(item.price_sale || item.price_root).toLocaleString("vi-VN")}{" "}
+                  VND
+                </td>
+                <td>{item.qty}</td>
+                <td>
+                  {(
+                    item.qty * (item.price_sale || item.price_root)
+                  ).toLocaleString("vi-VN")}{" "}
+                  VND
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Tổng cộng */}
+      <div className="card mt-3 mb-4">
+        <div className="card-body">
+          <p>Tạm tính: {subtotal.toLocaleString("vi-VN")} VND</p>
+          <p>Phí vận chuyển: {shippingFee.toLocaleString("vi-VN")} VND</p>
+          <p>Giảm giá: {discount.toLocaleString("vi-VN")} VND</p>
+          <hr />
+          <h5>
+            <strong>
+              Tổng thanh toán:{" "}
+              <span className="text-danger">
+                {total.toLocaleString("vi-VN")} VND
+              </span>
+            </strong>
+          </h5>
+        </div>
+      </div>
+
+      <div className="text-center">
+        <button className="btn btn-success px-5 py-2" onClick={handleCheckout}>
+          ✅ Xác nhận đặt hàng
+        </button>
+      </div>
+    </div>
+  );
+}
+
+export default Checkout;
