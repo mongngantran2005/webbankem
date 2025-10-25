@@ -19,4 +19,10 @@ class Brand extends Model
         'description',
         'status',
     ];
+    // ✅ Brand.php
+public function products()
+{
+    return $this->hasMany(Product::class, 'brand_id');
+}
+
 }

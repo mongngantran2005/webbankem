@@ -79,4 +79,10 @@ class Discount extends Model
     {
         return $this->hasMany(Order::class, 'discount_id', 'id');
     }
+
+    public function userDiscounts()
+    {
+        return $this->hasMany(UserDiscount::class, 'discount_id');
+    }
+
 }

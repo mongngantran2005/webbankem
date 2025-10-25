@@ -111,5 +111,6 @@ class BrandController extends Controller
 
         $brand->forceDelete();
         return response()->json(['success' => true, 'message' => 'Đã xóa vĩnh viễn thương hiệu']);
-    }
+    }    
+
 }

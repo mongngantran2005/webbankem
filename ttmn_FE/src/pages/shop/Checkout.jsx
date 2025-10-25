@@ -7,34 +7,47 @@ function Checkout() {
   const [address, setAddress] = useState("");
   const [phone, setPhone] = useState("");
   const [note, setNote] = useState("");
+  const [discountValue, setDiscountValue] = useState(0);
+  const [discountCode, setDiscountCode] = useState(null);
+
   const navigate = useNavigate();
   const location = useLocation();
 
   const getCartKey = (user) => (user ? `cart_${user.id}` : "cart_guest");
 
-  // 🟩 Load dữ liệu
+  // 🟩 Load dữ liệu khi vào trang
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
     setUser(storedUser);
 
+    // Nếu đến từ "Mua ngay"
     if (location.state?.product) {
       const { product } = location.state;
       setCart([{ ...product, qty: 1 }]);
     } else {
+      // Nếu đến từ giỏ hàng
       const key = getCartKey(storedUser);
       const storedCart = JSON.parse(localStorage.getItem(key)) || [];
       setCart(storedCart);
     }
+
+    // ✅ Nhận thông tin giảm giá từ Cart
+if (location.state?.selectedDiscount) {
+  const discountData = location.state.selectedDiscount.discount;
+  setDiscountCode(discountData.code);
+  setDiscountValue(location.state.discountValue || 0);
+}
+
+
   }, [location.state]);
 
-  // 💰 Tổng cộng
+  // 💰 Tính tổng tiền
   const subtotal = cart.reduce(
     (sum, item) => sum + item.qty * (item.price_sale || item.price_root),
     0
   );
   const shippingFee = 30000;
-  const discount = 0;
-  const total = subtotal + shippingFee - discount;
+  const total = Math.max(subtotal + shippingFee - discountValue, 0);
 
   // 🧮 Cập nhật số lượng
   const updateQuantity = (id, newQty) => {
@@ -43,7 +56,7 @@ function Checkout() {
         item.id === id ? { ...item, qty: Math.max(1, newQty) } : item
       );
 
-      // lưu lại giỏ hàng nếu không phải "mua ngay"
+      // Nếu không phải “mua ngay” thì lưu lại giỏ hàng
       if (!location.state?.product) {
         const key = getCartKey(user);
         localStorage.setItem(key, JSON.stringify(updated));
@@ -54,7 +67,7 @@ function Checkout() {
     });
   };
 
-  // 🧾 Thanh toán
+  // 🧾 Xử lý thanh toán
   const handleCheckout = async () => {
     if (!user) {
       alert("🔒 Vui lòng đăng nhập để thanh toán!");
@@ -79,6 +92,8 @@ function Checkout() {
           phone,
           note,
           total,
+          discount_code: discountCode,
+          discount_value: discountValue,
           items: cart,
         }),
       });
@@ -103,6 +118,7 @@ function Checkout() {
       if (data.success) {
         alert("🎉 Đặt hàng thành công! Đơn hàng đang được xử lý.");
 
+        // Nếu là từ giỏ hàng thì xoá giỏ
         if (!location.state?.product) {
           const key = getCartKey(user);
           localStorage.removeItem(key);
@@ -119,6 +135,7 @@ function Checkout() {
     }
   };
 
+  // 🛒 Nếu giỏ hàng trống
   if (cart.length === 0) {
     return (
       <div className="container py-5 text-center">
@@ -217,7 +234,7 @@ function Checkout() {
                       className="btn btn-sm btn-outline-secondary me-2"
                       onClick={() => updateQuantity(item.id, item.qty - 1)}
                     >
-                      -
+                      −
                     </button>
                     <input
                       type="number"
@@ -254,7 +271,11 @@ function Checkout() {
         <div className="card-body">
           <p>Tạm tính: {subtotal.toLocaleString("vi-VN")}₫</p>
           <p>Phí vận chuyển: {shippingFee.toLocaleString("vi-VN")}₫</p>
-          <p>Giảm giá: {discount.toLocaleString("vi-VN")}₫</p>
+          {discountCode && (
+            <p className="text-success">
+              Giảm ({discountCode}): −{discountValue.toLocaleString("vi-VN")}₫
+            </p>
+          )}
           <hr />
           <h5>
             Tổng thanh toán:{" "}

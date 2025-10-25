@@ -14,6 +14,8 @@ import Account from "../pages/shop/Account";
 import Search from '../pages/shop/Search';
 import ProductReview from '../pages/shop/ProductReview';
 import Discount from '../pages/shop/Discount';
+import EditAccount from "../pages/shop/EditAccount";
+import ChangePassword from "../pages/shop/ChangePassword";
 
 
 const ShopRoute = [
@@ -30,6 +32,8 @@ const ShopRoute = [
   { path: "/search/:keyword", component: Search },
   { path: "/product-review/:id",component: ProductReview, },// ✅ Chỉ cần truyền component
   { path: "/discount", component: Discount },
+  { path: "/edit-account", component: EditAccount },
+  { path: "/change-password", component: ChangePassword },
 
   
 

@@ -14,38 +14,47 @@ class AuthController extends Controller
      * Đăng ký user mới
      */
     public function register(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:ttmn_user,email',
-            'password' => 'required|string|min:6|confirmed',
-            'phone' => 'required|string|max:15',
-            'address' => 'required|string|max:255',
-        ]);
+{
+    $validator = Validator::make($request->all(), [
+        'name' => 'required|string|max:255',
+        'username' => 'required|string|max:100|unique:ttmn_user,username',
+        'email' => 'required|string|email|max:255|unique:ttmn_user,email',
+        'password' => 'required|string|min:6|confirmed',
+        'phone' => 'nullable|string|max:15',
+        'address' => 'nullable|string|max:255',
+        'birthday' => 'nullable|date',
+        'gender' => 'nullable|in:Nam,Nữ,Khác',
+        'avatar' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+    ]);
 
-        if ($validator->fails()) {
-            return response()->json([
-                'errors' => $validator->errors()
-            ], 422);
-        }
-
-        try {
-            $data = $validator->validated();
-            $data['roles'] = 'customer';
-            $data['status'] = 1;
-            $data['password'] = Hash::make($data['password']);
-
-            $user = User::create($data);
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Đăng ký thành công!',
-                'user' => $user
-            ], 201);
-        } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
-        }
+    if ($validator->fails()) {
+        return response()->json(['errors' => $validator->errors()], 422);
     }
+
+    try {
+        $data = $validator->validated();
+        $data['roles'] = 'customer';
+        $data['status'] = 1;
+        $data['password'] = Hash::make($data['password']);
+
+        // ✅ Lưu file ảnh (nếu có)
+        if ($request->hasFile('avatar')) {
+            $path = $request->file('avatar')->store('avatars', 'public');
+            $data['avatar'] = $path;
+        }
+
+        $user = User::create($data);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Đăng ký thành công!',
+            'user' => $user,
+        ], 201);
+    } catch (\Exception $e) {
+        return response()->json(['error' => $e->getMessage()], 500);
+    }
+}
+
 
     /**
      * Đăng nhập user

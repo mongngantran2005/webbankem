@@ -5,6 +5,7 @@ function Discount() {
   const [selectedDiscount, setSelectedDiscount] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // 🟢 Lấy danh sách mã giảm giá từ API
   useEffect(() => {
     const fetchDiscounts = async () => {
       try {
@@ -31,17 +32,43 @@ function Discount() {
     fetchDiscounts();
   }, []);
 
-  // 🟢 Lưu mã giảm giá được chọn
-  const handleSaveDiscount = () => {
+  // 🟢 Lưu mã giảm giá vào tài khoản người dùng
+  const handleSaveDiscount = async () => {
     if (!selectedDiscount) {
-      alert("Vui lòng chọn một mã giảm giá trước!");
+      alert("⚠️ Vui lòng chọn một mã giảm giá trước!");
       return;
     }
 
-    localStorage.setItem("selectedDiscount", JSON.stringify(selectedDiscount));
-    alert(`✅ Đã lưu mã giảm giá: ${selectedDiscount.code}`);
+    const token = localStorage.getItem("token");
+    if (!token) {
+      alert("🚫 Bạn cần đăng nhập để lưu mã giảm giá!");
+      return;
+    }
+
+    try {
+      const res = await fetch("http://127.0.0.1:8000/api/user/discounts", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ discount_id: selectedDiscount.id }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok && data.success) {
+        alert(`✅ ${data.message}`);
+      } else {
+        alert(`⚠️ ${data.message || "Không thể lưu mã giảm giá."}`);
+      }
+    } catch (err) {
+      console.error("Lỗi khi lưu mã giảm giá:", err);
+      alert("❌ Có lỗi xảy ra khi lưu mã giảm giá.");
+    }
   };
 
+  // 🟡 Giao diện hiển thị
   if (loading)
     return <div className="text-center py-5">⏳ Đang tải mã giảm giá...</div>;
 
@@ -71,9 +98,7 @@ function Discount() {
               {discounts.map((d) => (
                 <tr
                   key={d.id}
-                  className={
-                    selectedDiscount?.id === d.id ? "table-primary" : ""
-                  }
+                  className={selectedDiscount?.id === d.id ? "table-primary" : ""}
                   onClick={() => setSelectedDiscount(d)}
                   style={{ cursor: "pointer" }}
                 >
@@ -120,10 +145,7 @@ function Discount() {
 
       {/* Nút lưu mã */}
       <div className="text-center mt-4">
-        <button
-          className="btn btn-primary px-4 py-2"
-          onClick={handleSaveDiscount}
-        >
+        <button className="btn btn-primary px-4 py-2" onClick={handleSaveDiscount}>
           💾 Lưu Mã Giảm Giá
         </button>
       </div>

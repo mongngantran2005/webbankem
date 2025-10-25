@@ -272,73 +272,44 @@ const Header = () => {
 
       {/* NAVIGATION */}
       <nav className="navbar navbar-expand-lg navbar-light bg-white border-bottom">
-        <div className="container">
-          <div className="navbar-nav mx-auto">
-            <Link
-              to="/about"
-              className={`nav-link mx-3 ${isActive("/about") ? "active fw-bold" : ""}`}
-              style={{ color: isActive("/about") ? "#e91e63" : "#333" }}
-            >
-              GIỚI THIỆU
-            </Link>
+  <div className="container">
+    <div className="navbar-nav mx-auto">
+      <Link
+        to="/about"
+        className={`nav-link mx-3 ${isActive("/about") ? "active fw-bold" : ""}`}
+        style={{ color: isActive("/about") ? "#e91e63" : "#333" }}
+      >
+        GIỚI THIỆU
+      </Link>
 
-            {/* DROPDOWN SẢN PHẨM */}
-            <div className="nav-item dropdown mx-3">
-              <Link
-                to="/product"
-                className={`nav-link dropdown-toggle ${
-                  location.pathname.includes("/category") ? "fw-bold" : ""
-                }`}
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-                style={{
-                  color: location.pathname.includes("/category") ? "#e91e63" : "#333",
-                }}
-              >
-                SẢN PHẨM
-              </Link>
+      {/* Nút SẢN PHẨM — không còn dropdown */}
+      <Link
+        to="/product"
+        className={`nav-link mx-3 ${isActive("/product") ? "active fw-bold" : ""}`}
+        style={{ color: isActive("/product") ? "#e91e63" : "#333" }}
+      >
+        SẢN PHẨM
+      </Link>
 
-              <ul className="dropdown-menu">
-                <li>
-                  <Link to="/product" className="dropdown-item">
-                    🌟 Tất cả sản phẩm
-                  </Link>
-                </li>
-                <li><hr className="dropdown-divider" /></li>
+      <Link
+        to="/contact"
+        className={`nav-link mx-3 ${isActive("/contact") ? "active fw-bold" : ""}`}
+        style={{ color: isActive("/contact") ? "#e91e63" : "#333" }}
+      >
+        LIÊN HỆ
+      </Link>
 
-                {categories.length > 0 ? (
-                  categories.map((cat) => (
-                    <li key={cat.id}>
-                      <Link to={`/category/${cat.id}`} className="dropdown-item">
-                        {cat.name}
-                      </Link>
-                    </li>
-                  ))
-                ) : (
-                  <li className="dropdown-item text-muted">Đang tải...</li>
-                )}
-              </ul>
-            </div>
+      <Link
+        to="/news"
+        className={`nav-link mx-3 ${isActive("/news") ? "active fw-bold" : ""}`}
+        style={{ color: isActive("/news") ? "#e91e63" : "#333" }}
+      >
+        TIN TỨC
+      </Link>
+    </div>
+  </div>
+</nav>
 
-            <Link
-              to="/contact"
-              className={`nav-link mx-3 ${isActive("/contact") ? "fw-bold" : ""}`}
-              style={{ color: isActive("/contact") ? "#e91e63" : "#333" }}
-            >
-              LIÊN HỆ
-            </Link>
-
-            <Link
-              to="/news"
-              className={`nav-link mx-3 ${isActive("/news") ? "fw-bold" : ""}`}
-              style={{ color: isActive("/news") ? "#e91e63" : "#333" }}
-            >
-              TIN TỨC
-            </Link>
-          </div>
-        </div>
-      </nav>
     </>
   );
 };

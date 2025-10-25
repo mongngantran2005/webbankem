@@ -12,7 +12,7 @@ const NavAD = ({ className, onItemClick }) => {
     { name: 'Quản lý Khách hàng', path: '/admin/user-list' },
     { name: 'Quản lý Thương hiệu', path: '/admin/brand-list' },
     { name: 'Quản lý Tồn Kho', path: '/admin/inventory' },
-    { name: 'Quản lý Đánh giá', path: '/admin/danh-gia' },
+    { name: 'Quản lý Đánh giá', path: '/admin/review-list' },
     { name: 'Mã giảm giá', path: '/admin/discount-list' },
   ];
 

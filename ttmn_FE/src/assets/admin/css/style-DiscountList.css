@@ -1,93 +1,99 @@
-/* Tổng thể */
-.discount-container {
-  max-width: 1200px;
-  margin: 40px auto;
+.voucher-container {
   background: #fff;
-  padding: 25px 30px;
   border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  padding: 24px;
+  margin: 20px auto;
   font-family: "Inter", sans-serif;
 }
 
-/* Tiêu đề và nút thêm */
-.discount-header {
+.voucher-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 25px;
+  margin-bottom: 16px;
 }
 
-.discount-header h2 {
-  font-weight: 700;
+.voucher-header h2 {
+  font-size: 22px;
+  font-weight: 600;
   color: #333;
 }
 
-.btn-add {
-  background: #007bff;
+.btn-add-voucher {
+  background-color: #ee4d2d;
   color: white;
-  padding: 10px 18px;
-  border-radius: 6px;
+  padding: 10px 16px;
+  border-radius: 8px;
   text-decoration: none;
-  transition: 0.3s;
+  font-weight: 500;
+  transition: background 0.2s ease;
 }
 
-.btn-add:hover {
-  background: #0056b3;
+.btn-add-voucher:hover {
+  background-color: #d8431f;
 }
 
-/* Bảng danh sách */
-.table-wrapper {
+/* Table */
+.voucher-table-wrapper {
   overflow-x: auto;
 }
 
-.discount-table {
+.voucher-table {
   width: 100%;
   border-collapse: collapse;
-  text-align: center;
-  font-size: 15px;
+  border: 1px solid #eee;
 }
 
-.discount-table th {
-  background: #7b7d7f;
-  color: white;
-  padding: 12px;
-  font-weight: 600;
-}
-
-.discount-table td {
+.voucher-table th {
+  background-color: #ee4d2d;
+  color: #fff;
   padding: 10px;
-  border-bottom: 1px solid #eee;
-}
-
-.discount-table tr:hover {
-  background-color: #f7faff;
-}
-
-/* Cột code nổi bật */
-.code {
+  text-align: center;
   font-weight: 600;
-  color: #007bff;
 }
 
-/* Badge */
-.badge-active {
-  background-color: #28a745;
-  color: white;
-  padding: 5px 10px;
+.voucher-table td {
+  padding: 10px;
+  text-align: center;
+  border-bottom: 1px solid #f1f1f1;
+}
+
+.voucher-table tr:hover {
+  background-color: #fff4ef;
+}
+
+/* Status badges */
+.voucher-status {
+  display: inline-block;
+  padding: 4px 10px;
   border-radius: 20px;
-  font-size: 13px;
+  font-size: 12px;
+  font-weight: 600;
 }
 
-.badge-inactive {
-  background-color: #6c757d;
-  color: white;
-  padding: 5px 10px;
-  border-radius: 20px;
-  font-size: 13px;
+.status-active {
+  background-color: #4caf50;
+  color: #fff;
 }
 
-/* Nút hành động */
-.actions {
+.status-upcoming {
+  background-color: #ffeb3b;
+  color: #333;
+}
+
+.status-expired {
+  background-color: #f44336;
+  color: #fff;
+}
+
+.status-inactive {
+  background-color: #9e9e9e;
+  color: #fff;
+}
+
+/* Buttons */
+.voucher-actions {
   display: flex;
   justify-content: center;
   gap: 6px;
@@ -96,292 +102,191 @@
 .btn-edit,
 .btn-delete {
   border: none;
-  cursor: pointer;
-  border-radius: 6px;
   padding: 6px 10px;
+  border-radius: 6px;
   font-size: 14px;
-  transition: 0.3s;
+  cursor: pointer;
+  transition: background 0.2s ease;
 }
 
 .btn-edit {
-  background-color: #ffc107;
-  color: #000;
-}
-
-.btn-edit:hover {
-  background-color: #e0a800;
-}
-
-.btn-delete {
-  background-color: #dc3545;
-  color: #fff;
-}
-
-.btn-delete:hover {
-  background-color: #c82333;
-}
-
-/* Khi không có dữ liệu */
-.alert-empty {
-  text-align: center;
-  padding: 15px;
-  background: #fff3cd;
-  color: #856404;
-  border-radius: 8px;
-}
-
-/* Loading */
-.loading {
-  text-align: center;
-  color: #007bff;
-  font-size: 16px;
-  margin-top: 40px;
-}
-
-
-/* Product ADD */
-/* === Layout chung === */
-.discount-container, 
-.discount-add-container {
-  max-width: 1200px;
-  margin: 30px auto;
-  padding: 20px 30px;
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  font-family: "Inter", sans-serif;
-  color: #333;
-}
-
-/* === Header === */
-.discount-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.discount-header h2 {
-  font-size: 22px;
-  font-weight: 600;
-  color: #333;
-}
-
-.btn-add {
-  background: #16a34a;
-  color: white;
-  text-decoration: none;
-  padding: 8px 14px;
-  border-radius: 6px;
-  font-size: 15px;
-  transition: 0.2s;
-}
-
-.btn-add:hover {
-  background: #15803d;
-}
-
-/* === Bảng === */
-.table-wrapper {
-  overflow-x: auto;
-}
-
-.discount-table {
-  width: 100%;
-  border-collapse: collapse;
-  min-width: 900px;
-}
-
-.discount-table th,
-.discount-table td {
-  padding: 10px 12px;
-  text-align: center;
-  border-bottom: 1px solid #eee;
-}
-
-.discount-table th {
-  background: #f8fafc;
-  font-weight: 600;
-  color: #111;
-}
-
-.discount-table tbody tr:hover {
-  background: #f1f5f9;
-}
-
-.code {
-  font-weight: 600;
-  color: #0ea5e9;
-}
-
-/* === Trạng thái === */
-.badge-active {
-  background: #dcfce7;
-  color: #166534;
-  padding: 4px 8px;
-  border-radius: 8px;
-  font-size: 13px;
-}
-
-.badge-inactive {
-  background: #fee2e2;
-  color: #991b1b;
-  padding: 4px 8px;
-  border-radius: 8px;
-  font-size: 13px;
-}
-
-/* === Hành động === */
-.actions {
-  display: flex;
-  gap: 6px;
-  justify-content: center;
-}
-
-.btn-edit, .btn-delete {
-  border: none;
-  padding: 6px 10px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 14px;
-  transition: 0.2s;
-  text-decoration: none;
-}
-
-.btn-edit {
-  background: #3b82f6;
+  background-color: #2196f3;
   color: white;
 }
 
 .btn-edit:hover {
-  background: #2563eb;
+  background-color: #1976d2;
 }
 
 .btn-delete {
-  background: #ef4444;
+  background-color: #f44336;
   color: white;
 }
 
 .btn-delete:hover {
-  background: #dc2626;
+  background-color: #d32f2f;
 }
 
-/* === Trạng thái tải / rỗng === */
-.loading,
-.alert-empty {
+/* Misc */
+.voucher-loading {
   text-align: center;
-  padding: 20px;
-  font-size: 15px;
   color: #555;
+  font-size: 16px;
+  margin-top: 20px;
 }
 
-.alert-empty {
-  background: #fef3c7;
-  border-radius: 8px;
-}
-
-/* === Discount Add Form === */
-.discount-add-title {
-  font-size: 20px;
-  font-weight: 600;
-  margin-bottom: 20px;
+.voucher-empty {
   text-align: center;
+  color: #888;
+  background: #fafafa;
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px dashed #ddd;
 }
 
+
+/* -------------------------------------- */
+/* Add */
+
+/* 🎨 Toàn bộ bố cục */
+.discount-add-container {
+  max-width: 850px;
+  margin: 40px auto;
+  background: #ffffff;
+  padding: 30px 40px;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* 🏷️ Tiêu đề */
+.discount-add-title {
+  text-align: center;
+  font-size: 1.8rem;
+  color: #0d6efd;
+  margin-bottom: 25px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+/* 🧾 Thẻ form */
 .discount-add-card {
-  background: #f9fafb;
-  padding: 20px 25px;
-  border-radius: 10px;
-  border: 1px solid #e5e7eb;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
+/* 🎯 Nhóm form */
 .discount-form-group {
-  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
 .discount-form-label {
-  display: block;
-  font-weight: 500;
-  margin-bottom: 6px;
+  font-weight: 600;
+  color: #333;
+  font-size: 0.95rem;
 }
 
+/* ✍️ Input & Select */
 .discount-form-control,
 .discount-form-select {
-  width: 100%;
-  padding: 8px 10px;
-  border: 1px solid #d1d5db;
-  border-radius: 6px;
-  font-size: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 0.95rem;
+  transition: all 0.2s ease-in-out;
 }
 
 .discount-form-control:focus,
 .discount-form-select:focus {
+  border-color: #0d6efd;
+  box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.15);
   outline: none;
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(59,130,246,0.2);
 }
 
-/* Row và Col để chia đôi */
+/* 🧩 Row chia cột */
 .discount-form-row {
   display: flex;
-  gap: 16px;
+  gap: 20px;
   flex-wrap: wrap;
 }
 
 .discount-form-col {
   flex: 1;
-  min-width: 280px;
+  min-width: 250px;
 }
 
-/* Nút chính */
+/* 🟢 Nút lưu */
 .discount-btn-primary {
-  background: #2563eb;
-  color: white;
-  padding: 10px 16px;
-  font-size: 15px;
+  background-color: #0d6efd;
+  color: #fff;
   border: none;
+  padding: 12px 20px;
+  font-size: 1rem;
   border-radius: 8px;
   cursor: pointer;
-  transition: 0.2s;
+  transition: background 0.3s ease, transform 0.2s ease;
 }
 
 .discount-btn-primary:hover {
-  background: #1d4ed8;
+  background-color: #0b5ed7;
+  transform: translateY(-2px);
 }
 
 .discount-btn-primary:disabled {
-  opacity: 0.6;
+  background-color: #6c757d;
   cursor: not-allowed;
 }
 
+/* 🧾 Thông báo */
+.discount-alert {
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-weight: 500;
+  text-align: center;
+}
+
+.discount-alert-success {
+  background-color: #d1e7dd;
+  color: #0f5132;
+  border: 1px solid #badbcc;
+}
+
+.discount-alert-danger {
+  background-color: #f8d7da;
+  color: #842029;
+  border: 1px solid #f5c2c7;
+}
+
+.discount-alert-info {
+  background-color: #cff4fc;
+  color: #055160;
+  border: 1px solid #b6effb;
+}
+
+/* 🧭 Căn giữa */
 .discount-text-center {
   text-align: center;
 }
 
+/* 🔝 Khoảng cách */
 .discount-mt-3 {
-  margin-top: 16px;
+  margin-top: 20px;
 }
 
-/* === Thông báo === */
-.discount-alert {
-  margin-top: 10px;
-  padding: 10px 14px;
-  border-radius: 6px;
-  text-align: center;
-  font-weight: 500;
-}
+/* 📱 Responsive */
+@media (max-width: 600px) {
+  .discount-add-container {
+    padding: 25px;
+  }
 
-.discount-alert-success {
-  background: #dcfce7;
-  color: #166534;
-}
+  .discount-add-title {
+    font-size: 1.5rem;
+  }
 
-.discount-alert-danger {
-  background: #fee2e2;
-  color: #991b1b;
-}
-
-.discount-alert-info {
-  background: #e0f2fe;
-  color: #075985;
+  .discount-form-col {
+    min-width: 100%;
+  }
 }

@@ -1,288 +1,190 @@
-/* UserList.css */
-
-/* Container chính */
+/* ==== Tổng thể trang ==== */
 .user-list-container {
-  padding: 20px;
-  max-width: 1400px;
-  margin: 0 auto;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Roboto", sans-serif;
+  background-color: #f6f6f6;
+  min-height: 100vh;
+  padding: 24px;
 }
 
-/* Tiêu đề trang */
 .page-title {
-  font-size: 2rem;
+  font-size: 1.8rem;
   font-weight: 600;
-  color: #2d3748;
-  margin-bottom: 1.5rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 2px solid #e2e8f0;
+  color: #ee4d2d;
+  margin-bottom: 24px;
 }
 
-/* Container bảng */
+/* ==== Bảng chung ==== */
 .user-table-container {
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
   overflow: hidden;
-  margin-bottom: 2rem;
+  margin-bottom: 30px;
 }
 
-/* Bảng người dùng */
-.user-table {
+.user-table,
+.orders-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 0.9rem;
-}
-
-.user-table th {
-  background: #f7fafc;
-  padding: 12px 16px;
   text-align: left;
+}
+
+.user-table th,
+.orders-table th {
+  background-color: #fef5f3;
+  color: #ee4d2d;
+  padding: 14px 12px;
   font-weight: 600;
-  color: #4a5568;
-  border-bottom: 1px solid #e2e8f0;
-  font-size: 0.85rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+  font-size: 0.95rem;
+  border-bottom: 2px solid #ffd2c8;
 }
 
-.user-table td {
-  padding: 12px 16px;
-  border-bottom: 1px solid #edf2f7;
-  color: #4a5568;
+.user-table td,
+.orders-table td {
+  padding: 12px;
+  border-bottom: 1px solid #f0f0f0;
+  font-size: 0.9rem;
+  color: #333;
 }
 
-.user-table tbody tr:hover {
-  background-color: #f8fafc;
+.user-table tr:hover,
+.orders-table tr:hover {
+  background-color: #fff8f6;
+  transition: background 0.2s;
 }
 
-.user-table tbody tr:last-child td {
-  border-bottom: none;
-}
-
-/* Trạng thái loading */
-.loading-state {
-  text-align: center;
-  padding: 3rem;
-  font-size: 1.1rem;
-  color: #718096;
-}
-
-/* Empty state */
+/* ==== Empty state ==== */
 .empty-state {
   text-align: center;
-  padding: 4rem 2rem;
-  color: #718096;
+  padding: 50px 0;
+  color: #888;
 }
 
 .empty-state-icon {
-  font-size: 3rem;
-  margin-bottom: 1rem;
-  opacity: 0.5;
+  font-size: 2rem;
+  margin-bottom: 10px;
 }
 
-.empty-state p {
-  font-size: 1.1rem;
-  margin: 0;
-}
-
-/* Badge trạng thái */
-.status-badge {
-  padding: 4px 8px;
-  border-radius: 12px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.status-pending {
-  background-color: #fff3cd;
-  color: #856404;
-  border: 1px solid #ffeaa7;
-}
-
-.status-completed {
-  background-color: #d1ecf1;
-  color: #0c5460;
-  border: 1px solid #b8ebf4;
-}
-
-.status-cancelled {
-  background-color: #f8d7da;
-  color: #721c24;
-  border: 1px solid #f5c6cb;
-}
-
+/* ==== Trạng thái người dùng ==== */
 .status-active {
-  color: #38a169;
-  font-weight: 600;
+  background: #e8f5e9;
+  color: #2e7d32;
+  font-weight: 500;
+  padding: 4px 8px;
+  border-radius: 6px;
   font-size: 0.85rem;
 }
 
 .status-inactive {
-  color: #e53e3e;
-  font-weight: 600;
+  background: #ffebee;
+  color: #c62828;
+  font-weight: 500;
+  padding: 4px 8px;
+  border-radius: 6px;
   font-size: 0.85rem;
 }
 
-/* Link hành động */
-.text-blue-600 {
-  color: #3182ce;
-  text-decoration: none;
+/* ==== Badge trạng thái đơn hàng ==== */
+.status-badge {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 6px;
   font-weight: 500;
   font-size: 0.85rem;
 }
 
-.text-blue-600:hover {
-  color: #2c5aa0;
-  text-decoration: underline;
+.status-pending {
+  background: #fff3e0;
+  color: #ef6c00;
 }
 
-/* Phần đơn hàng */
-.orders-section {
-  margin-top: 2rem;
-  padding-top: 2rem;
-  border-top: 2px solid #e2e8f0;
+.status-completed {
+  background: #e8f5e9;
+  color: #388e3c;
 }
 
-.orders-title {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #2d3748;
-  margin-bottom: 1rem;
+.status-cancelled {
+  background: #ffebee;
+  color: #d32f2f;
 }
 
-.selected-user {
-  color: #3182ce;
-  font-weight: 700;
-}
-
-.no-orders {
-  text-align: center;
-  padding: 2rem;
-  color: #718096;
-  font-style: italic;
-  background: #f8f9fa;
-  border-radius: 6px;
-}
-
-/* Bảng đơn hàng */
-.orders-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 0.85rem;
-}
-
-.orders-table th {
-  background: #f7fafc;
-  padding: 12px 16px;
-  text-align: left;
-  font-weight: 600;
-  color: #4a5568;
-  border-bottom: 1px solid #e2e8f0;
-  font-size: 0.8rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.orders-table td {
-  padding: 12px 16px;
-  border-bottom: 1px solid #edf2f7;
-  color: #4a5568;
-  vertical-align: top;
-}
-
-.orders-table tbody tr:hover {
-  background-color: #f8fafc;
-}
-
-.orders-table tbody tr:last-child td {
-  border-bottom: none;
-}
-
-/* Danh sách sản phẩm */
+/* ==== Liệt kê sản phẩm trong đơn ==== */
 .product-list {
   list-style: none;
   padding: 0;
   margin: 0;
-  max-width: 200px;
 }
-
 .product-item {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  padding: 4px 0;
-  border-bottom: 1px solid #f1f1f1;
+  font-size: 0.9rem;
+  margin-bottom: 5px;
 }
-
-.product-item:last-child {
-  border-bottom: none;
-}
-
 .product-name {
-  flex: 1;
-  font-weight: 500;
-  color: #2d3748;
-  font-size: 0.8rem;
-  line-height: 1.3;
+  color: #333;
 }
-
 .product-qty {
-  color: #718096;
-  font-size: 0.75rem;
+  color: #777;
+}
+
+/* ==== Nút hành động ==== */
+.text-blue-600 {
+  color: #007bff;
+  text-decoration: underline;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+.text-blue-600:hover {
+  color: #0056b3;
+}
+
+/* ==== Phần danh sách đơn hàng người dùng ==== */
+.orders-section {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  padding: 20px;
+}
+
+.orders-title {
+  font-size: 1.3rem;
   font-weight: 600;
-  margin-left: 8px;
+  color: #333;
+  margin-bottom: 15px;
 }
 
-/* Responsive */
-@media (max-width: 1024px) {
-  .user-list-container {
-    padding: 15px;
-  }
-  
-  .user-table-container {
-    overflow-x: auto;
-  }
-  
-  .user-table,
-  .orders-table {
-    min-width: 1000px;
-  }
+.selected-user {
+  color: #ee4d2d;
 }
 
-@media (max-width: 768px) {
-  .page-title {
-    font-size: 1.5rem;
-  }
-  
-  .orders-title {
-    font-size: 1.25rem;
-  }
-  
+.no-orders {
+  color: #777;
+  font-style: italic;
+  text-align: center;
+  padding: 20px 0;
+}
+
+/* ==== Loading ==== */
+.loading-state {
+  text-align: center;
+  font-size: 1.1rem;
+  padding: 50px 0;
+  color: #555;
+}
+
+/* ==== Responsive ==== */
+@media (max-width: 992px) {
   .user-table th,
   .user-table td,
   .orders-table th,
   .orders-table td {
-    padding: 8px 12px;
+    font-size: 0.85rem;
+    padding: 10px;
   }
 }
 
-@media (max-width: 480px) {
-  .user-list-container {
-    padding: 10px;
-  }
-  
-  .page-title {
-    font-size: 1.25rem;
-  }
-  
-  .empty-state {
-    padding: 2rem 1rem;
-  }
-  
-  .empty-state-icon {
-    font-size: 2rem;
+@media (max-width: 768px) {
+  .user-table-container {
+    overflow-x: auto;
   }
 }

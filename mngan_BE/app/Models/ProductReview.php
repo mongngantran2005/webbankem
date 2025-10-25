@@ -34,5 +34,10 @@ class ProductReview extends Model
 {
     return $this->hasMany(ProductReviewImage::class, 'review_id');
 }
+public function replies()
+{
+    return $this->hasMany(ReviewReply::class, 'review_id', 'id')->with('user');
+}
+
 
 }

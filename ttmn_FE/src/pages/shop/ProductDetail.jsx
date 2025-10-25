@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useEffect, useState, useRef } from "react";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { getCart, saveCart } from "../../api/apiUser";
-import ProductReview from "./ProductReview"; // ✅ thêm dòng này
+import ProductReview from "./ProductReview";
 
 function ProductDetail() {
   const { id } = useParams();
+  const location = useLocation();
   const navigate = useNavigate();
   const [product, setProduct] = useState(null);
   const [relatedProducts, setRelatedProducts] = useState([]);
@@ -12,6 +13,18 @@ function ProductDetail() {
   const [relatedLoading, setRelatedLoading] = useState(false);
   const [addingToCart, setAddingToCart] = useState(false);
   const [qtyInput, setQtyInput] = useState(1);
+
+  const reviewRef = useRef(null); // ✅ dùng để cuộn tới phần đánh giá
+
+  // ✅ Cuộn tới phần đánh giá nếu URL có ?review=true
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    if (params.get("review") === "true" && reviewRef.current) {
+      setTimeout(() => {
+        reviewRef.current.scrollIntoView({ behavior: "smooth" });
+      }, 400);
+    }
+  }, [location]);
 
   // ✅ Hàm xử lý URL ảnh
   const getImageUrl = (thumbnail) => {
@@ -69,7 +82,6 @@ function ProductDetail() {
       return;
     }
 
-    // 🔒 Kiểm tra đăng nhập
     const token = localStorage.getItem("token");
     if (!token) {
       alert("⚠️ Vui lòng đăng nhập trước khi thêm sản phẩm vào giỏ hàng!");
@@ -77,10 +89,9 @@ function ProductDetail() {
       return;
     }
 
-    // ✅ Nếu đã đăng nhập → thêm vào giỏ riêng của user
     setAddingToCart(true);
 
-    const cart = getCart(); // 🟢 lấy đúng giỏ hàng theo user hiện tại
+    const cart = getCart();
     const exists = cart.find((i) => i.id === product.id);
     let newCart;
 
@@ -92,7 +103,7 @@ function ProductDetail() {
       newCart = [...cart, { ...product, qty: qtyInput }];
     }
 
-    saveCart(newCart); // 🟢 lưu lại vào localStorage theo user
+    saveCart(newCart);
 
     setTimeout(() => {
       setAddingToCart(false);
@@ -100,13 +111,11 @@ function ProductDetail() {
     }, 300);
   };
 
-  // ✅ Hàm định dạng giá
   const format = (p) => Number(p || 0).toLocaleString("vi-VN");
   const discount = product
     ? Math.round((1 - product.price_sale / product.price_root) * 100)
     : 0;
 
-  // ✅ Giao diện loading
   if (loading)
     return (
       <div className="loading text-center py-5">
@@ -115,7 +124,6 @@ function ProductDetail() {
       </div>
     );
 
-  // ✅ Nếu không tìm thấy sản phẩm
   if (!product)
     return (
       <div className="empty text-center py-5">
@@ -129,18 +137,15 @@ function ProductDetail() {
   return (
     <div className="product-detail container py-5">
       <div className="row">
-        {/* ✅ Ảnh chính */}
+        {/* ✅ Ảnh sản phẩm */}
         <div className="col-md-6 text-center">
           <div className="image-box position-relative">
             <img
               src={getImageUrl(product.thumbnail)}
               alt={product.name || "Ảnh sản phẩm"}
               className="main-img img-fluid rounded shadow-sm"
-              onError={(e) => {
-                e.target.src = "/images/placeholder.jpg";
-              }}
+              onError={(e) => (e.target.src = "/images/placeholder.jpg")}
             />
-
             {discount > 0 && (
               <span className="badge bg-danger position-absolute top-0 start-0 m-3">
                 -{discount}%
@@ -162,9 +167,7 @@ function ProductDetail() {
           {product.qty > 0 && (
             <p className="text-secondary mb-3">
               Còn lại:{" "}
-              <span className="fw-semibold text-dark">
-                {product.qty} sản phẩm
-              </span>
+              <span className="fw-semibold text-dark">{product.qty} sản phẩm</span>
             </p>
           )}
 
@@ -189,7 +192,6 @@ function ProductDetail() {
             <p className="text-secondary">{product.description}</p>
           )}
 
-          {/* ✅ Số lượng */}
           {product.qty > 0 && (
             <div className="d-flex align-items-center gap-3 my-3">
               <label htmlFor="qty" className="fw-semibold">
@@ -208,7 +210,6 @@ function ProductDetail() {
             </div>
           )}
 
-          {/* ✅ Nút hành động */}
           <div className="buttons mt-4 d-flex gap-3">
             <button
               className="btn btn-outline-danger px-4"
@@ -273,7 +274,7 @@ function ProductDetail() {
       </div>
 
       {/* ⭐ Đánh giá sản phẩm */}
-      <div className="mt-5">
+      <div ref={reviewRef} className="mt-5">
         <ProductReview productId={product.id} canReview={true} />
       </div>
     </div>

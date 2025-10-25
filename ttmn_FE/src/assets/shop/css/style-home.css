@@ -1,147 +1,171 @@
-/* --- Hiệu ứng Card chung --- */
-.clickable-card {
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
-  border-radius: 10px;
-  border: 1px solid #f8d7e0;
-}
-
-.clickable-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 25px rgba(255, 107, 157, 0.3);
-  border-color: #ff6b9d;
-}
-
-/* Ánh sáng hồng quét */
-.clickable-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
+/* 🎨 ====== BỐ CỤC CHUNG ====== */
+main {
+  background: #f9f9f9;
+  padding: 20px 0;
   width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 107, 157, 0.1), transparent);
-  transition: left 0.5s ease;
-  z-index: 1;
-}
-.clickable-card:hover::before { left: 100%; }
-
-/* Ảnh phóng to khi hover */
-.product-card .card-img-top {
-  transition: transform 0.3s ease;
-}
-.product-card:hover .card-img-top {
-  transform: scale(1.05);
 }
 
-/* Badge giảm giá */
+.home-container-fluid {
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 0 20px;
+  background: #fafafa;
+}
+
+.container {
+  max-width: 100% !important;
+  padding: 0 20px;
+}
+
+.row {
+  margin: 0;
+}
+
+/* 🧩 ====== PHẦN BỘ LỌC (Sidebar trái) ====== */
+.filter-sidebar {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  padding: 20px;
+}
+
+.filter-sidebar h5 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #e74c3c;
+  border-bottom: 2px solid #ffd6d6;
+  padding-bottom: 8px;
+  margin-bottom: 15px;
+}
+
+.filter-sidebar strong {
+  color: #333;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.filter-sidebar input[type="number"],
+.filter-sidebar input[type="text"] {
+  font-size: 14px;
+  border-radius: 6px;
+}
+
+.filter-sidebar button {
+  background: #e74c3c;
+  border: none;
+  border-radius: 6px;
+  color: #fff;
+  font-weight: 600;
+  transition: background 0.3s;
+}
+
+.filter-sidebar button:hover {
+  background: #d62c1a;
+}
+
+/* 🛍️ ====== PHẦN SẢN PHẨM ====== */
+.product-card {
+  position: relative;
+  border: 1px solid #eee;
+  border-radius: 10px;
+  background: #fff;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+.product-card img {
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  object-fit: cover;
+}
+
 .discount-badge {
   position: absolute;
   top: 10px;
   left: 10px;
-  background: #ff6b9d;
-  color: white;
+  background: #ff4d4f;
+  color: #fff;
+  font-size: 13px;
   font-weight: bold;
   padding: 4px 8px;
   border-radius: 6px;
-  font-size: 0.8rem;
-  z-index: 2;
-  transition: all 0.3s ease;
-}
-.clickable-card:hover .discount-badge {
-  background: linear-gradient(135deg, #ff2d7a, #ff1a6a);
-  transform: scale(1.05);
 }
 
-/* Tên sản phẩm */
-.product-name {
-  transition: color 0.3s ease;
-}
-.clickable-card:hover .product-name {
-  color: #ff6b9d;
+.card-body h6 {
+  color: #333;
+  font-size: 15px;
+  font-weight: 600;
 }
 
-/* Giá */
-.product-prices {
-  transition: all 0.3s ease;
-}
-.clickable-card:hover .product-prices .text-danger {
-  color: #ff2d7a !important;
-}
-.clickable-card:hover .product-prices .text-primary {
-  color: #ff4d8d !important;
+.card-body .text-danger {
+  font-weight: 700;
+  font-size: 16px;
 }
 
-/* Thương hiệu */
-.clickable-card:hover .text-muted.small {
-  color: #ff6b9d !important;
+section h4 {
+  font-weight: 700;
+  border-left: 5px solid #ff6b81;
+  padding-left: 10px;
 }
 
-/* Hiệu ứng click */
-@keyframes cardClick {
-  0% { transform: scale(1); }
-  50% { transform: scale(0.98); }
-  100% { transform: scale(1); }
-}
-.clickable-card:active {
-  animation: cardClick 0.2s ease;
-}
-
-/* Mobile */
-@media (max-width: 768px) {
-  .clickable-card {
-    -webkit-tap-highlight-color: transparent;
-  }
-  .clickable-card:active {
-    background-color: rgba(255, 107, 157, 0.05);
-  }
-}
-/* -----css có phần chia 7_3 */
-/* Tổng thể */
+/* 🎟️ ====== PHẦN MÃ GIẢM GIÁ (Sidebar phải) ====== */
 .discount-sidebar {
-  position: sticky;
-  top: 20px;
-  max-height: 85vh;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  padding: 15px;
+  max-height: 80vh;
   overflow-y: auto;
-  background-color: #fff;
 }
 
-.discount-sidebar::-webkit-scrollbar {
-  width: 6px;
-}
-.discount-sidebar::-webkit-scrollbar-thumb {
-  background-color: #ccc;
-  border-radius: 3px;
+.discount-sidebar h5 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #e74c3c;
+  text-align: center;
+  margin-bottom: 15px;
 }
 
-/* Card mã giảm giá */
 .discount-card {
-  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  background: #fff7f7;
+  border: 1px dashed #ff9999;
+  border-radius: 8px;
+  padding: 10px 12px;
+  transition: all 0.2s ease;
+  margin-bottom: 12px;
 }
+
 .discount-card:hover {
-  transform: scale(1.02);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border-color: #ff4d4f;
+  background: #fff0f0;
 }
 
-/* Phần sản phẩm */
-.product-card {
-  transition: all 0.25s ease-in-out;
-}
-.product-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+.discount-card .fw-bold {
+  color: #d62c1a;
 }
 
-/* Badge giảm giá */
-.discount-badge {
-  position: absolute;
-  top: 8px;
-  left: 8px;
-  background-color: #dc3545;
-  color: white;
-  font-weight: bold;
-  padding: 4px 8px;
+.discount-card .btn {
   border-radius: 6px;
-  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 4px 8px;
+  transition: 0.2s;
+}
+
+.discount-card .btn-danger:hover {
+  background: #c82333;
+}
+
+/* 📱 ====== RESPONSIVE ====== */
+@media (max-width: 992px) {
+  .filter-sidebar {
+    margin-bottom: 20px;
+  }
+  .discount-sidebar {
+    margin-top: 20px;
+  }
 }

@@ -22,6 +22,13 @@ import Dashboard from "../pages/admin/dashboard/Dashboard";
 //
 import DiscountAdd from "../pages/admin/discount/DiscountAdd";
 import DiscountList from "../pages/admin/discount/DiscountList";
+  //Review
+import ReviewList from "../pages/admin/review/ReviewList";
+import ReviewProductUser from "../pages/admin/review/ReviewProductUser";
+
+ //
+import BrandList from "../pages/admin/brand/BrandList";
+
 
 const AdminRoute = [
   // Category
@@ -49,6 +56,14 @@ const AdminRoute = [
   //Discount
   { path: "discount-add", component: DiscountAdd  },
   { path: "discount-list", component: DiscountList  },
+  //Review
+  { path: "discount-add", component: DiscountAdd  },
+  { path: "review-list", component: ReviewList  },
+    { path: "review-product-user", component: ReviewProductUser  },
+
+  //Brand
+  { path: "brand-list", component: BrandList  },
+
 
 ];
 

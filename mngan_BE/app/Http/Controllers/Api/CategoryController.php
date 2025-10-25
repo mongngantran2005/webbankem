@@ -30,21 +30,27 @@ class CategoryController extends Controller
 
 
     public function show($id)
-    {
-        $category = Category::find($id);
+{
+    $category = Category::find($id);
 
-        if (!$category) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Không tìm thấy danh mục'
-            ], 404);
-        }
-
+    if (!$category) {
         return response()->json([
-            'success' => true,
-            'data' => $category
-        ]);
+            'success' => false,
+            'message' => 'Không tìm thấy danh mục'
+        ], 404);
     }
+
+    // ✅ Thêm đoạn này để có URL đầy đủ
+    $category->image = $category->image
+        ? url('storage/' . $category->image)
+        : url('images/placeholder.jpg');
+
+    return response()->json([
+        'success' => true,
+        'data' => $category
+    ]);
+}
+
 
     public function getBrandsByCategory($id)
     {

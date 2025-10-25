@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client'
 
 // --------CSS Shop--------
 import "./assets/shop/css/style-header.css";
-// import "./assets/shop/css/style-contact.css";
+import "./assets/shop/css/style-dashboard.css";
 import "./assets/shop/css/style-header.css";
 import "./assets/shop/css/style-footer.css";
 // import "./assets/shop/css/style-nav.css";
@@ -32,6 +32,7 @@ import "./assets/admin/css/style-UserList.css";
 import "./assets/admin/css/style-OrderDetail.css";
 import "./assets/admin/css/style-OrderByUser.css";
 import "./assets/admin/css/style-DiscountList.css";
+import "./assets/admin/css/style-reviewList.css";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ShopLayout from "./components/shop/ShopLayout.jsx";

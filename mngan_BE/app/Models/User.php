@@ -27,12 +27,17 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'name',
-        'email',
-        'password',
-        'phone',
-        'address'
-    ];
+    'name',
+    'username',
+    'email',
+    'password',
+    'phone',
+    'address',
+    'birthday',
+    'gender',
+    'avatar',
+];
+
 
     /**
      * The attributes that should be hidden for serialization.
@@ -56,4 +61,9 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+    public function userDiscounts()
+{
+    return $this->hasMany(UserDiscount::class, 'user_id');
+}
+
 }

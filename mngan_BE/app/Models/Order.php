@@ -13,15 +13,19 @@ class Order extends Model
     protected $table = 'ttmn_order';
 
     protected $fillable = [
-        'user_id',
-        'name',
-        'phone',
-        'email',
-        'address',
-        'note',
-        'status',
-        'discount_id', // ✅ thêm để có thể lưu giá trị này
-    ];
+    'user_id',
+    'name',
+    'phone',
+    'email',
+    'address',
+    'note',
+    'status',
+    'discount_id',     // mã giảm giá (nếu có)
+    'discount_code',   // 🔹 mã (VD: GIAM10)
+    'discount_value',  // 🔹 số tiền được giảm (VD: 10000)
+    'total',           // 🔹 tổng tiền sau khi trừ giảm giá + cộng phí ship
+];
+
 
     // ✅ 1 đơn hàng có nhiều chi tiết
     public function orderDetails()

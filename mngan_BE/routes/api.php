@@ -11,8 +11,8 @@ use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\ProductReviewController;
 use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\DiscountController;
-
-
+use App\Http\Controllers\Api\UserDiscountController;
+use App\Http\Controllers\Api\ProductReviewReplyController;
 use Illuminate\Http\Request;
 
 Route::post('/checkout', [OrderController::class, 'checkout']);
@@ -155,9 +155,25 @@ Route::prefix('orders/admin')->group(function () {
 });
 
 
+// ✅ Route danh sách người dùng (cho admin)
+
+    Route::get('/users', [UserController::class, 'index']);
+
 // User
 
-Route::get('/users', [UserController::class, 'index']);
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/user/profile', [UserController::class, 'profile']);
+    Route::post('/user/profile/update', [UserController::class, 'updateProfile']);
+    Route::post('/user/change-password', [UserController::class, 'changePassword']);
+
+     // 🎟️ API lưu mã giảm giá của người dùng
+    Route::post('/user/discounts', [UserDiscountController::class, 'store']);
+    Route::get('/user/discounts', [UserDiscountController::class, 'index']);
+    Route::get('/discounts/user/{userId}', [UserDiscountController::class, 'getUserDiscounts']);
+
+});
+
+
 //Product ADMIN
 Route::put('/products/{id}/update-stock', [ProductController::class, 'updateStock']);
 
@@ -173,7 +189,8 @@ Route::put('/products/{id}/update-stock', [ProductController::class, 'updateStoc
 //Product Review
 Route::get('/products/{id}/reviews', [ProductReviewController::class, 'index']);
 Route::post('/products/{id}/reviews', [ProductReviewController::class, 'store']);
-
+Route::get('/reviews/admin/all', [ProductReviewController::class, 'all']);
+Route::get('/reviews/average', [ProductReviewController::class, 'averageRatings']);
 Route::get('/orders/user/{userId}/completed', [OrderController::class, 'getCompletedOrders']);
 Route::post('/reviews/{reviewId}/images', [ProductReviewController::class, 'uploadImages']);
 
@@ -188,3 +205,6 @@ Route::put('/discounts/{id}', [DiscountController::class, 'update']);
 Route::delete('/discounts/{id}', [DiscountController::class, 'destroy']);
 Route::get('/discounts/active', [DiscountController::class, 'active']);
 Route::post('/discounts/apply', [DiscountController::class, 'apply']);
+//Product ReviewReply
+Route::post('/reviews/{review_id}/reply', [ProductReviewReplyController::class, 'store']);
+

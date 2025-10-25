@@ -1,0 +1,160 @@
+.review-container {
+  padding: 24px;
+  background-color: #f9fafb;
+  min-height: 100vh;
+  font-family: "Inter", sans-serif;
+}
+
+.review-title {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: #1e293b;
+}
+
+/* Bộ lọc */
+.review-filters {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+  background: #fff;
+  padding: 16px;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  margin-bottom: 24px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+}
+
+.review-filters select,
+.review-filters input {
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 8px;
+  font-size: 14px;
+  outline: none;
+}
+
+.review-filters select:focus,
+.review-filters input:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px #93c5fd;
+}
+
+.review-filters button {
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.review-filters button:hover {
+  background: #1d4ed8;
+}
+
+/* Bảng */
+.review-table-container {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  overflow-x: auto;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.05);
+}
+
+.review-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  color: #374151;
+}
+
+.review-table th,
+.review-table td {
+  border: 1px solid #e2e8f0;
+  padding: 10px 12px;
+  text-align: left;
+}
+
+.review-table th {
+  background: #f1f5f9;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 12px;
+  color: #475569;
+}
+
+.review-table tr:nth-child(even) {
+  background: #f9fafb;
+}
+
+.review-table tr:hover {
+  background: #e0f2fe;
+}
+
+.rating {
+  text-align: center;
+  color: #f59e0b;
+  font-weight: bold;
+}
+
+/* Ảnh */
+.review-images {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+}
+
+.review-images img {
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+}
+
+/* Dòng không có dữ liệu */
+.no-data {
+  text-align: center;
+  color: #94a3b8;
+  font-style: italic;
+  padding: 16px;
+}
+
+
+/* Phần phản hồi đánh giá */
+.reply-section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.reply-section textarea {
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 6px 8px;
+  font-size: 13px;
+  resize: vertical;
+  font-family: "Inter", sans-serif;
+}
+
+.reply-section textarea:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px #93c5fd;
+}
+
+.reply-section button {
+  background: #0ea5e9;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 8px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.reply-section button:hover {
+  background: #0284c7;
+}

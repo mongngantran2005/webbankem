@@ -258,16 +258,24 @@ public function forceDelete($id)
 
     // ✅ Lấy sản phẩm theo category_id
     public function getByCategory($categoryId)
-    {
-        $products = Product::where('category_id', $categoryId)
-            ->whereNull('deleted_at')
-            ->get();
+{
+    $products = Product::with(['brand:id,name', 'category:id,name'])
+        ->where('category_id', $categoryId)
+        ->whereNull('deleted_at')
+        ->get()
+        ->map(function ($product) {
+            $product->thumbnail = $product->thumbnail
+                ? url('uploads/products/' . ltrim($product->thumbnail, '/'))
+                : url('images/placeholder.jpg');
+            return $product;
+        });
 
-        return response()->json([
-            'success' => true,
-            'data'    => $products
-        ]);
-    }
+    return response()->json([
+        'success' => true,
+        'data'    => $products
+    ]);
+}
+
     // Search Sản Phẩm
     public function search($keyword)
     {
@@ -373,6 +381,8 @@ public function forceDelete($id)
         ], 500);
     }
 }
+
+
 
 
 

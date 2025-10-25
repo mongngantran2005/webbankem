@@ -14,7 +14,14 @@ const Account = () => {
   useEffect(() => {
     const savedUser = localStorage.getItem("user");
     if (savedUser) {
-      setUser(JSON.parse(savedUser));
+      const parsedUser = JSON.parse(savedUser);
+
+      // Nếu avatar chỉ là tên file thì thêm đường dẫn đầy đủ
+      if (parsedUser.avatar && !parsedUser.avatar.startsWith("http")) {
+        parsedUser.avatar = `http://127.0.0.1:8000/storage/${parsedUser.avatar}`;
+      }
+
+      setUser(parsedUser);
     } else {
       navigate("/login");
     }
@@ -27,8 +34,7 @@ const Account = () => {
       if (!user?.id) return;
       try {
         const res = await axiosInstance.get(`/orders/user/${user.id}`);
-        if (res.data.success) {
-          // Chuẩn hóa dữ liệu
+        if (res.data.success && Array.isArray(res.data.orders)) {
           const formattedOrders = res.data.orders.map((order) => ({
             ...order,
             items:
@@ -80,22 +86,36 @@ const Account = () => {
 
   return (
     <div className="account-page container py-5">
-      {/* Hồ sơ người dùng */}
+      {/* 🧍 Hồ sơ người dùng */}
       <div className="profile-section mb-4 d-flex align-items-center gap-3">
         <div
           className="avatar-circle d-flex align-items-center justify-content-center bg-secondary text-white"
-          style={{ width: "70px", height: "70px", borderRadius: "50%", fontSize: "28px" }}
+          style={{ width: "70px", height: "70px", borderRadius: "50%", overflow: "hidden" }}
         >
-          {user.name?.charAt(0).toUpperCase()}
+          {user.avatar ? (
+            <img
+              src={user.avatar}
+              alt="avatar"
+              style={{ width: "100%", height: "100%", objectFit: "cover" }}
+              onError={(e) => {
+                e.target.src = "https://via.placeholder.com/70x70?text=No+Img";
+              }}
+            />
+          ) : (
+            <span style={{ fontSize: "28px" }}>{user.name?.charAt(0).toUpperCase()}</span>
+          )}
         </div>
+
         <div>
           <h4 className="mb-1">{user.name}</h4>
           <p className="text-muted mb-1">{user.email}</p>
-          <button className="btn btn-outline-primary btn-sm">✏️ Sửa Hồ Sơ</button>
+          <Link to="/edit-account" className="btn btn-outline-primary btn-sm">
+            ✏️ Sửa Hồ Sơ
+          </Link>
         </div>
       </div>
 
-      {/* Tabs trạng thái đơn hàng */}
+      {/* 🧾 Tabs trạng thái đơn hàng */}
       <div className="order-tabs mb-3 d-flex flex-wrap gap-2">
         {tabs.map((tab) => (
           <button
@@ -110,7 +130,7 @@ const Account = () => {
         ))}
       </div>
 
-      {/* Danh sách đơn hàng */}
+      {/* 📦 Danh sách đơn hàng */}
       <div className="orders-list">
         {filteredOrders.length === 0 ? (
           <p className="text-center">Không có đơn hàng nào.</p>
@@ -135,7 +155,7 @@ const Account = () => {
                 </span>
               </div>
 
-              {/* Danh sách sản phẩm */}
+              {/* Danh sách sản phẩm trong đơn */}
               <div className="table-responsive mt-2">
                 <table className="table align-middle text-center">
                   <thead className="table-light">
@@ -154,7 +174,11 @@ const Account = () => {
                         <tr key={item.id}>
                           <td>
                             <img
-                              src={`http://127.0.0.1:8000/uploads/products/${item.thumbnail}`}
+                              src={
+                                item.thumbnail
+                                  ? `http://127.0.0.1:8000/uploads/products/${item.thumbnail}`
+                                  : "https://via.placeholder.com/60x60?text=No+Img"
+                              }
                               alt={item.name}
                               style={{
                                 width: "60px",
@@ -162,6 +186,10 @@ const Account = () => {
                                 objectFit: "cover",
                                 borderRadius: "6px",
                               }}
+                              onError={(e) =>
+                                (e.target.src =
+                                  "https://via.placeholder.com/60x60?text=No+Img")
+                              }
                             />
                           </td>
                           <td>{item.name}</td>
@@ -175,7 +203,7 @@ const Account = () => {
                           <td>
                             {order.status === 3 && (
                               <Link
-                                to={`/product-review/${item.productId}`}
+                                to={`/product-detail/${item.productId}`}
                                 className="btn btn-sm btn-outline-success"
                               >
                                 Đánh giá

@@ -174,6 +174,23 @@ const ProductReview = () => {
                 </div>
               )}
 
+              {/* ✅ HIỂN THỊ PHẢN HỒI CỦA ADMIN */}
+              {review.replies && review.replies.length > 0 && (
+                <div className="bg-light border rounded p-2 mt-3">
+                  {review.replies.map((reply) => (
+                    <div key={reply.id} className="mb-2">
+                      <strong className="text-primary">
+                        🛍️ Phản hồi từ người bán:
+                      </strong>
+                      <p className="mb-1">{reply.content}</p>
+                      <small className="text-muted">
+                        {new Date(reply.created_at).toLocaleString("vi-VN")}
+                      </small>
+                    </div>
+                  ))}
+                </div>
+              )}
+
               <small className="text-muted d-block mt-2">
                 {new Date(review.created_at).toLocaleString("vi-VN")}
               </small>

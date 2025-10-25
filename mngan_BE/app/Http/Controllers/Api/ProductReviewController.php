@@ -26,10 +26,15 @@ class ProductReviewController extends Controller
             ], 404);
         }
 
-        $reviews = ProductReview::with(['user:id,name', 'images'])
+        $reviews = ProductReview::with([
+    'user:id,name',
+    'images',
+    'replies.user:id,name', // 🟢 Thêm dòng này để load phản hồi + tên người trả lời
+])
     ->where('product_id', $productId)
     ->orderByDesc('created_at')
     ->get();
+
 
 
         return response()->json([
@@ -154,6 +159,50 @@ public function uploadImages(Request $request, $reviewId)
         'success' => true,
         'message' => 'Tải ảnh thành công!',
         'images' => $uploadedImages,
+    ]);
+}
+
+/**
+ * ✅ Admin xem tất cả đánh giá (có filter)
+ */
+public function all(Request $request)
+{
+    $query = ProductReview::with(['user:id,name', 'product:id,name', 'images'])
+        ->orderByDesc('created_at');
+
+    if ($request->has('product_id') && $request->product_id) {
+        $query->where('product_id', $request->product_id);
+    }
+
+    if ($request->has('rating') && $request->rating) {
+        $query->where('rating', $request->rating);
+    }
+
+    if ($request->has('date_from') && $request->has('date_to')) {
+        $query->whereBetween('created_at', [$request->date_from, $request->date_to]);
+    }
+
+    $reviews = $query->get();
+
+    return response()->json([
+        'success' => true,
+        'reviews' => $reviews,
+    ]);
+}
+
+/**
+ * ✅ Tính trung bình rating mỗi sản phẩm
+ */
+public function averageRatings()
+{
+    $avg = ProductReview::selectRaw('product_id, ROUND(AVG(rating),1) as average_rating, COUNT(*) as total_reviews')
+        ->groupBy('product_id')
+        ->with('product:id,name')
+        ->get();
+
+    return response()->json([
+        'success' => true,
+        'data' => $avg,
     ]);
 }
 
