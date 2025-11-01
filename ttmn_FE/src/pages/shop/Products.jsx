@@ -119,12 +119,21 @@ const Products = () => {
       >
         <div className="position-relative">
           <img
-            src={getImageUrl(product.thumbnail)}
-            className="card-img-top rounded-top"
-            alt={product.name}
-            style={{ height: "220px", objectFit: "cover" }}
-            onError={(e) => (e.target.src = "/images/placeholder.jpg")}
-          />
+  src={
+    product.thumbnail?.startsWith("http")
+      ? product.thumbnail
+      : product.thumbnail?.includes("uploads/")
+      ? `http://127.0.0.1:8000/${product.thumbnail}`
+      : `http://127.0.0.1:8000/uploads/products/${product.thumbnail}`
+  }
+  alt={product.name}
+  className="card-img-top"
+  style={{ height: "200px", objectFit: "cover" }}
+  onError={(e) => {
+    e.target.src = "http://127.0.0.1:8000/images/placeholder.jpg";
+  }}
+/>
+
           {product.price_sale && product.price_sale < product.price_root && (
             <span className="badge bg-danger position-absolute top-0 start-0 m-2">
               -{calculateDiscount(product.price_root, product.price_sale)}%

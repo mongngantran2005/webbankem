@@ -116,9 +116,10 @@ export default function VoucherList() {
                     </td>
                     <td>
                       <div className="voucher-actions">
-                        <Link to={`/discount-edit/${v.id}`} className="btn-edit">
-                          ✏️
-                        </Link>
+                        <Link to={`/admin/discount-edit/${v.id}`} className="btn-edit">
+  ✏️
+</Link>
+
                         <button
                           onClick={() => handleDelete(v.id)}
                           className="btn-delete"

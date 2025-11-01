@@ -1,0 +1,59 @@
+/* --- Popup banner overlay --- */
+.popup-banner-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.3s ease;
+}
+
+/* --- Nội dung popup --- */
+.popup-banner-content {
+  position: relative;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  animation: scaleIn 0.3s ease;
+}
+
+.popup-banner-img {
+  max-width: 90vw;
+  max-height: 80vh;
+  display: block;
+}
+
+/* --- Nút đóng --- */
+.popup-close-btn {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  line-height: 28px;
+  text-align: center;
+  transition: background 0.2s;
+}
+
+.popup-close-btn:hover {
+  background: #ff4d6d;
+  color: #fff;
+}
+
+/* --- Hiệu ứng --- */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from { transform: scale(0.8); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}

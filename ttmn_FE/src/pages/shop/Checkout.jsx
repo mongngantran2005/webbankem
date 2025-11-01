@@ -9,9 +9,18 @@ function Checkout() {
   const [note, setNote] = useState("");
   const [discountValue, setDiscountValue] = useState(0);
   const [discountCode, setDiscountCode] = useState(null);
+  const [paymentMethod, setPaymentMethod] = useState("COD"); // ✅ Mặc định COD
 
   const navigate = useNavigate();
   const location = useLocation();
+  // ✅ Hàm xử lý đường dẫn ảnh an toàn
+const getImageUrl = (thumbnail) => {
+  if (!thumbnail) return "http://127.0.0.1:8000/images/placeholder.jpg";
+  if (thumbnail.startsWith("http")) return thumbnail;
+  if (thumbnail.startsWith("/uploads/")) return `http://127.0.0.1:8000${thumbnail}`;
+  return `http://127.0.0.1:8000/uploads/products/${thumbnail}`;
+};
+
 
   const getCartKey = (user) => (user ? `cart_${user.id}` : "cart_guest");
 
@@ -20,8 +29,8 @@ function Checkout() {
     const storedUser = JSON.parse(localStorage.getItem("user"));
     setUser(storedUser);
 
-    // Nếu đến từ "Mua ngay"
     if (location.state?.product) {
+      // Nếu đến từ "Mua ngay"
       const { product } = location.state;
       setCart([{ ...product, qty: 1 }]);
     } else {
@@ -32,13 +41,11 @@ function Checkout() {
     }
 
     // ✅ Nhận thông tin giảm giá từ Cart
-if (location.state?.selectedDiscount) {
-  const discountData = location.state.selectedDiscount.discount;
-  setDiscountCode(discountData.code);
-  setDiscountValue(location.state.discountValue || 0);
-}
-
-
+    if (location.state?.selectedDiscount) {
+      const discountData = location.state.selectedDiscount.discount;
+      setDiscountCode(discountData.code);
+      setDiscountValue(location.state.discountValue || 0);
+    }
   }, [location.state]);
 
   // 💰 Tính tổng tiền
@@ -56,7 +63,6 @@ if (location.state?.selectedDiscount) {
         item.id === id ? { ...item, qty: Math.max(1, newQty) } : item
       );
 
-      // Nếu không phải “mua ngay” thì lưu lại giỏ hàng
       if (!location.state?.product) {
         const key = getCartKey(user);
         localStorage.setItem(key, JSON.stringify(updated));
@@ -80,7 +86,8 @@ if (location.state?.selectedDiscount) {
     }
 
     try {
-      const res = await fetch("http://127.0.0.1:8000/api/checkout", {
+      // 🟩 1️⃣ Gửi đơn hàng lên backend
+      const orderRes = await fetch("http://127.0.0.1:8000/api/checkout", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -95,30 +102,22 @@ if (location.state?.selectedDiscount) {
           discount_code: discountCode,
           discount_value: discountValue,
           items: cart,
+          payment_method: paymentMethod,
         }),
       });
 
-      const data = await res.json();
+      const orderData = await orderRes.json();
 
-      if (!res.ok) {
-        if (data.invalid_items?.length > 0) {
-          const msg = data.invalid_items
-            .map(
-              (p) =>
-                `❌ ${p.name}: chỉ còn ${p.stock} sản phẩm, bạn đặt ${p.requested}.`
-            )
-            .join("\n");
-          alert("⚠️ " + data.message + "\n\n" + msg);
-        } else {
-          alert("❌ " + (data.message || "Thanh toán thất bại!"));
-        }
+      if (!orderRes.ok || !orderData.success) {
+        alert("❌ Tạo đơn hàng thất bại!");
+        console.error(orderData);
         return;
       }
 
-      if (data.success) {
+      // ✅ Nếu người dùng chọn COD
+      if (paymentMethod === "COD") {
         alert("🎉 Đặt hàng thành công! Đơn hàng đang được xử lý.");
 
-        // Nếu là từ giỏ hàng thì xoá giỏ
         if (!location.state?.product) {
           const key = getCartKey(user);
           localStorage.removeItem(key);
@@ -126,12 +125,47 @@ if (location.state?.selectedDiscount) {
         }
 
         navigate("/");
-      } else {
-        alert("❌ Thanh toán thất bại, vui lòng thử lại!");
+        return;
+      }
+
+      // ✅ Nếu người dùng chọn MoMo
+      if (paymentMethod === "MoMo") {
+        const momoRes = await fetch("http://127.0.0.1:8000/api/payment/momo", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    amount: total,
+    // 🔥 luôn tạo orderId duy nhất
+    orderId: `${orderData.order_id}_${Date.now()}`,
+    orderInfo: `Thanh toán đơn hàng #${orderData.order_id}`,
+    redirectUrl: "http://localhost:5173/payment-result",
+  }),
+});
+
+
+        const momoData = await momoRes.json();
+
+        // ✅ Kiểm tra kỹ phản hồi MoMo
+        if (!momoData || (!momoData.payUrl && !momoData.deeplink)) {
+          alert("❌ Không tạo được liên kết thanh toán MoMo!");
+          console.error("Phản hồi MoMo:", momoData);
+          return;
+        }
+
+        // 🟢 Xóa giỏ hàng trước khi rời trang
+        if (!location.state?.product) {
+          const key = getCartKey(user);
+          localStorage.removeItem(key);
+          window.dispatchEvent(new Event("storage"));
+        }
+
+        // ✅ Điều hướng sang trang MoMo
+        const redirectUrl = momoData.payUrl || momoData.deeplink;
+        window.location.href = redirectUrl;
       }
     } catch (error) {
-      console.error("Lỗi khi thanh toán:", error);
-      alert("🚫 Có lỗi xảy ra khi gửi đơn hàng!");
+      console.error("Lỗi khi xử lý thanh toán:", error);
+      alert("🚫 Có lỗi xảy ra khi thanh toán!");
     }
   };
 
@@ -194,6 +228,39 @@ if (location.state?.selectedDiscount) {
         </div>
       </div>
 
+      {/* 🟦 Chọn phương thức thanh toán */}
+      <div className="card mb-4">
+        <div className="card-body">
+          <h5 className="fw-semibold mb-3">Phương thức thanh toán</h5>
+          <div className="form-check">
+            <input
+              type="radio"
+              className="form-check-input"
+              id="cod"
+              value="COD"
+              checked={paymentMethod === "COD"}
+              onChange={(e) => setPaymentMethod(e.target.value)}
+            />
+            <label htmlFor="cod" className="form-check-label">
+              💵 Thanh toán khi nhận hàng (COD)
+            </label>
+          </div>
+          <div className="form-check mt-2">
+            <input
+              type="radio"
+              className="form-check-input"
+              id="momo"
+              value="MoMo"
+              checked={paymentMethod === "MoMo"}
+              onChange={(e) => setPaymentMethod(e.target.value)}
+            />
+            <label htmlFor="momo" className="form-check-label">
+              💳 Thanh toán online qua MoMo
+            </label>
+          </div>
+        </div>
+      </div>
+
       {/* Bảng sản phẩm */}
       <h4 className="text-center mb-3">🛒 Chi tiết sản phẩm</h4>
       <div className="table-responsive">
@@ -214,15 +281,19 @@ if (location.state?.selectedDiscount) {
                 <td>{index + 1}</td>
                 <td>
                   <img
-                    src={`http://127.0.0.1:8000/uploads/products/${item.thumbnail}`}
-                    alt={item.name}
-                    style={{
-                      width: "60px",
-                      height: "60px",
-                      objectFit: "cover",
-                      borderRadius: "6px",
-                    }}
-                  />
+  src={getImageUrl(item.thumbnail)}
+  alt={item.name}
+  style={{
+    width: "60px",
+    height: "60px",
+    objectFit: "cover",
+    borderRadius: "6px",
+  }}
+  onError={(e) => {
+    e.target.src = "http://127.0.0.1:8000/images/placeholder.jpg";
+  }}
+/>
+
                 </td>
                 <td>{item.name}</td>
                 <td>

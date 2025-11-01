@@ -185,17 +185,13 @@ const handleDelete = async (id) => {
 
         <div className="header-actions">
           <div className="view-mode-toggle">
-            <button
-              className={`btn ${
-                viewMode === "active" ? "btn-primary" : "btn-secondary"
-              }`}
-              onClick={() => {
-                setViewMode("active");
-                setCurrentPage(1);
-              }}
-            >
-              Sản Phẩm Active
-            </button>
+           <Link
+  to="/admin/product-import"
+  className="btn btn-primary"
+>
+  Import Sản Phẩm
+</Link>
+
             <Link
   to="/admin/product-trash"
   className={`btn ${
@@ -247,9 +243,11 @@ const handleDelete = async (id) => {
                 <td>
   <img
     src={
-      product.thumbnail
-        ? `http://127.0.0.1:8000/uploads/products/${product.thumbnail}`
-        : "http://127.0.0.1:8000/images/placeholder.jpg"
+      product.thumbnail?.startsWith("http")
+        ? product.thumbnail
+        : product.thumbnail?.includes("uploads/")
+        ? `http://127.0.0.1:8000/${product.thumbnail}`
+        : `http://127.0.0.1:8000/uploads/products/${product.thumbnail}`
     }
     alt={product.name}
     className="product-image"
@@ -258,6 +256,7 @@ const handleDelete = async (id) => {
     }}
   />
 </td>
+
 
                 <td>
                   <div className="product-name-main">{product.name}</div>
@@ -312,12 +311,13 @@ const handleDelete = async (id) => {
                   {viewMode === "active" ? (
                     <>
                       <Link
-                        to={`/admin/product-show/:id/${product.id}`}
-                        className="btn btn-view"
-                        title="Xem chi tiết"
-                      >
-                        <MdVisibility />
-                      </Link>
+  to={`/admin/product-show/${product.id}`}
+  className="btn btn-view"
+  title="Xem chi tiết"
+>
+  <MdVisibility />
+</Link>
+
                       <Link
                         to={`/admin/editProduct/${product.id}`}
                         className="btn btn-edit"

@@ -7,6 +7,14 @@ function Inventory() {
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
 
+  // ✅ Hàm xử lý đường dẫn ảnh an toàn
+const getImageUrl = (thumbnail) => {
+  if (!thumbnail) return "http://127.0.0.1:8000/images/placeholder.jpg";
+  if (thumbnail.startsWith("http")) return thumbnail;
+  if (thumbnail.startsWith("/uploads/")) return `http://127.0.0.1:8000${thumbnail}`;
+  return `http://127.0.0.1:8000/uploads/products/${thumbnail}`;
+};
+
   // ✅ Lấy danh sách sản phẩm từ API admin
   const fetchProducts = async () => {
     try {
@@ -103,14 +111,19 @@ function Inventory() {
                 <td>{i + 1}</td>
                 <td>
                   <img
-                    src={
-                      p.thumbnail
-                        ? `http://127.0.0.1:8000/uploads/products/${p.thumbnail}`
-                        : "http://127.0.0.1:8000/images/placeholder.jpg"
-                    }
-                    alt={p.name}
-                    style={{ width: 60, height: 60, objectFit: "cover", borderRadius: 8 }}
-                  />
+  src={getImageUrl(p.thumbnail)}
+  alt={p.name}
+  style={{
+    width: 60,
+    height: 60,
+    objectFit: "cover",
+    borderRadius: 8,
+  }}
+  onError={(e) => {
+    e.target.src = "http://127.0.0.1:8000/images/placeholder.jpg";
+  }}
+/>
+
                 </td>
                 <td className="text-start">{p.name}</td>
                 <td>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Discount;
+use App\Models\UserDiscount;
 
 class DiscountController extends Controller
 {
@@ -75,4 +76,34 @@ class DiscountController extends Controller
 
         return response()->json(['success' => true, 'data' => $discount]);
     }
+
+    // 🟢 Lấy danh sách mã giảm giá theo user
+public function getUserDiscounts($userId)
+{
+    $userDiscounts = UserDiscount::with('discount') // load thông tin mã giảm giá
+        ->where('user_id', $userId)
+        ->orderBy('created_at', 'desc')
+        ->get();
+
+    return response()->json([
+        'success' => true,
+        'data' => $userDiscounts,
+    ]);
+}
+
+// 🟢 Lấy chi tiết 1 mã giảm giá
+public function show($id)
+{
+    try {
+        $discount = Discount::findOrFail($id);
+        return response()->json(['success' => true, 'data' => $discount]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Không tìm thấy mã giảm giá hoặc lỗi server',
+            'error' => $e->getMessage()
+        ], 500);
+    }
+}
+
 }

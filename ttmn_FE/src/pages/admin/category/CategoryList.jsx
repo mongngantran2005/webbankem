@@ -9,40 +9,36 @@ function CategoryList() {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [viewMode, setViewMode] = useState('active'); // 'active' or 'trash'
+  const [viewMode, setViewMode] = useState("active"); // 'active' or 'trash'
   const navigate = useNavigate();
 
   useEffect(() => {
     fetchCategories();
   }, [viewMode]);
 
-  const fetchCategories = () => {
+  const fetchCategories = async () => {
     setLoading(true);
-    const apiCall = viewMode === 'active' ? apiCategory.getAll() : apiCategory.getTrash();
-    
-    apiCall.then((res) => {
-      try {
-        if (res.data.success) {
-          setCategories(res.data.data);
-        } else {
-          setError("Lỗi khi tải danh sách danh mục");
-        }
-      } catch (e) {
-        console.error("Lỗi khi xử lý dữ liệu:", e);
-        setError("Lỗi khi xử lý dữ liệu");
-      } finally {
-        setLoading(false);
+    try {
+      const res =
+        viewMode === "active"
+          ? await apiCategory.getAll()
+          : await apiCategory.getTrash();
+
+      if (res.data.success) {
+        setCategories(res.data.data);
+      } else {
+        setError("Lỗi khi tải danh sách danh mục");
       }
-    }).catch(err => {
+    } catch (err) {
       console.error("API Error:", err);
       setError("Lỗi kết nối server");
+    } finally {
       setLoading(false);
-    });
+    }
   };
 
   const handleDelete = async (id) => {
     if (!window.confirm("Bạn có chắc chắn muốn xóa danh mục này?")) return;
-
     try {
       const response = await apiCategory.delete(id);
       if (response.data.success) {
@@ -72,7 +68,6 @@ function CategoryList() {
 
   const handleForceDelete = async (id) => {
     if (!window.confirm("Bạn có chắc chắn muốn xóa VĨNH VIỄN danh mục này?")) return;
-
     try {
       const response = await apiCategory.forceDelete(id);
       if (response.data.success) {
@@ -101,20 +96,25 @@ function CategoryList() {
   };
 
   const getParentName = (parent) => {
-    if (!parent || parent.id === 0) return "-";
-    return parent.name;
+    return parent && parent.id !== 0 ? parent.name : "-";
   };
 
   const getStatusBadge = (status) => {
-    return status ? 
-      <span className="status-badge active">Kích hoạt</span> : 
-      <span className="status-badge inactive">Ẩn</span>;
+    return status ? (
+      <span className="status-badge active">Kích hoạt</span>
+    ) : (
+      <span className="status-badge inactive">Ẩn</span>
+    );
   };
 
+  // ✅ Đã chỉnh để khớp CategoryEdit — BE trả URL đầy đủ, không cần nối chuỗi
   const getImageUrl = (imagePath) => {
-  if (!imagePath) return "/images/placeholder.jpg";
-  return `http://127.0.0.1:8000/images/category/${imagePath}`;
-};
+    if (!imagePath) return "http://127.0.0.1:8000/images/placeholder.jpg";
+    // Nếu BE trả full URL, giữ nguyên — nếu chỉ là path, tự nối storage/
+    return imagePath.startsWith("http")
+      ? imagePath
+      : `http://127.0.0.1:8000/storage/${imagePath}`;
+  };
 
   if (loading) return <div className="loading">Đang tải...</div>;
   if (error) return <div className="error">{error}</div>;
@@ -123,24 +123,28 @@ function CategoryList() {
     <div className="category-admin">
       <div className="category-header">
         <h1>
-          {viewMode === 'active' ? 'Danh Sách Danh Mục' : 'Danh Mục Đã Xóa'}
+          {viewMode === "active" ? "Danh Sách Danh Mục" : "Danh Mục Đã Xóa"}
         </h1>
         <div className="header-actions">
           <div className="view-mode-toggle">
-            <button 
-              className={`btn ${viewMode === 'active' ? 'btn-primary' : 'btn-secondary'}`}
-              onClick={() => setViewMode('active')}
+            <button
+              className={`btn ${
+                viewMode === "active" ? "btn-primary" : "btn-secondary"
+              }`}
+              onClick={() => setViewMode("active")}
             >
               Danh Mục Active
             </button>
-            <button 
-              className={`btn ${viewMode === 'trash' ? 'btn-primary' : 'btn-secondary'}`}
-              onClick={() => setViewMode('trash')}
+            <button
+              className={`btn ${
+                viewMode === "trash" ? "btn-primary" : "btn-secondary"
+              }`}
+              onClick={() => setViewMode("trash")}
             >
               Thùng Rác
             </button>
           </div>
-          {viewMode === 'active' && (
+          {viewMode === "active" && (
             <Link to="/admin/addCategory" className="btn btn-primary">
               + Thêm Danh Mục
             </Link>
@@ -168,36 +172,37 @@ function CategoryList() {
               <tr key={item.id}>
                 <td>{item.id}</td>
                 <td>
-                  {getImageUrl(item.image) ? (
-                     <img
-  src={getImageUrl(item.image)}
-  alt={item.name}
-  style={{
-    width: "80px",
-    height: "80px",
-    objectFit: "cover",
-    borderRadius: "8px",
-    border: "1px solid #ddd",
-  }}
-  onError={(e) => (e.target.src = "/images/placeholder.jpg")}
-/>
-
-
-                  ) : (
-                    <div className="no-image">No Image</div>
-                  )}
+                  <img
+                    src={getImageUrl(item.image)}
+                    alt={item.name}
+                    style={{
+                      width: "80px",
+                      height: "80px",
+                      objectFit: "cover",
+                      borderRadius: "8px",
+                      border: "1px solid #ddd",
+                    }}
+                    onError={(e) =>
+                      (e.target.src =
+                        "http://127.0.0.1:8000/images/placeholder.jpg")
+                    }
+                  />
                 </td>
                 <td className="category-name">{item.name}</td>
                 <td>{getParentName(item.parent)}</td>
                 <td className="category-slug">{item.slug}</td>
-                <td className="category-desc">{item.description || "-"}</td>
+                <td className="category-desc">
+                  {item.description || "-"}
+                </td>
                 <td>{item.sort_order}</td>
                 <td>
-                  {viewMode === 'active' ? (
-                    <button 
+                  {viewMode === "active" ? (
+                    <button
                       onClick={() => handleStatusToggle(item.id)}
-                      className={`status-toggle ${item.status ? 'active' : 'inactive'}`}
-                      title={item.status ? 'Tắt' : 'Bật'}
+                      className={`status-toggle ${
+                        item.status ? "active" : "inactive"
+                      }`}
+                      title={item.status ? "Tắt" : "Bật"}
                     >
                       {item.status ? <FaToggleOn /> : <FaToggleOff />}
                     </button>
@@ -206,16 +211,16 @@ function CategoryList() {
                   )}
                 </td>
                 <td className="actions">
-                  {viewMode === 'active' ? (
+                  {viewMode === "active" ? (
                     <>
-                      <Link 
+                      <Link
                         to={`/admin/category/${item.id}`}
                         className="btn btn-view"
                         title="Xem chi tiết"
                       >
                         <MdVisibility />
                       </Link>
-                      <Link 
+                      <Link
                         to={`/admin/editCategory/${item.id}`}
                         className="btn btn-edit"
                         title="Sửa danh mục"
@@ -253,10 +258,12 @@ function CategoryList() {
             ))}
           </tbody>
         </table>
-        
+
         {categories.length === 0 && (
           <div className="no-data">
-            {viewMode === 'active' ? 'Không có danh mục nào' : 'Thùng rác trống'}
+            {viewMode === "active"
+              ? "Không có danh mục nào"
+              : "Thùng rác trống"}
           </div>
         )}
       </div>

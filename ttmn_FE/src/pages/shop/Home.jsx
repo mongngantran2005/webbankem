@@ -147,12 +147,21 @@ const clearFilters = () => {
           </div>
         )}
         <img
-          src={product.thumbnail || "/images/placeholder.jpg"}
-          alt={product.name}
-          className="card-img-top"
-          style={{ height: "200px", objectFit: "cover" }}
-          onError={(e) => (e.target.src = "/images/placeholder.jpg")}
-        />
+  src={
+  product.thumbnail?.startsWith("http")
+    ? product.thumbnail
+    : `http://127.0.0.1:8000/${product.thumbnail}`
+}
+
+
+  alt={product.name}
+  className="card-img-top"
+  style={{ height: "200px", objectFit: "cover" }}
+  onError={(e) => {
+    e.target.src = "http://127.0.0.1:8000/images/placeholder.jpg";
+  }}
+/>
+
         <div className="card-body text-center">
           <h6 className="fw-bold mb-2">
             {product.name?.length > 40 ? `${product.name.slice(0, 40)}...` : product.name}

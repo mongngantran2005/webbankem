@@ -14,6 +14,8 @@ const NavAD = ({ className, onItemClick }) => {
     { name: 'Quản lý Tồn Kho', path: '/admin/inventory' },
     { name: 'Quản lý Đánh giá', path: '/admin/review-list' },
     { name: 'Mã giảm giá', path: '/admin/discount-list' },
+    { name: 'Sự kiện ', path: '/admin/banner-list' },
+
   ];
 
   const isActive = (path) => {

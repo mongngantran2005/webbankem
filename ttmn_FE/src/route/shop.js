@@ -16,6 +16,8 @@ import ProductReview from '../pages/shop/ProductReview';
 import Discount from '../pages/shop/Discount';
 import EditAccount from "../pages/shop/EditAccount";
 import ChangePassword from "../pages/shop/ChangePassword";
+import PaymentSuccess from "../pages/shop/PaymentSuccess";
+import ChatBox from "../pages/shop/ChatBox";
 
 
 const ShopRoute = [
@@ -30,12 +32,13 @@ const ShopRoute = [
   { path: "/register", component: Register },
   { path: "/account", component: Account },
   { path: "/search/:keyword", component: Search },
-  { path: "/product-review/:id",component: ProductReview, },// ✅ Chỉ cần truyền component
+  { path: "/product-review/:id",component: ProductReview, },
   { path: "/discount", component: Discount },
   { path: "/edit-account", component: EditAccount },
   { path: "/change-password", component: ChangePassword },
+  { path: "/payment-success", component: PaymentSuccess  },
+  { path: "/chat-box", component: ChatBox  },
 
-  
 
 ];
 

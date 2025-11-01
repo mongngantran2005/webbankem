@@ -1,277 +1,261 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import apiCategory from '../../../api/apiCategory';
+import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import apiCategory from "../../../api/apiCategory";
 
-const CategoryEdit = () => {
+export default function CategoryEdit() {
+  const { id } = useParams();
   const navigate = useNavigate();
-  const { documentId } = useParams();
+
   const [categories, setCategories] = useState([]);
   const [formData, setFormData] = useState({
-    name: '',
+    name: "",
+    slug: "",
     parent_id: 0,
-    description: '',
+    description: "",
     sort_order: 0,
-    status: true
+    status: true,
+    image: null,
   });
-  const [image, setImage] = useState(null);
-  const [imagePreview, setImagePreview] = useState('');
-  const [errors, setErrors] = useState({});
+
+  const [preview, setPreview] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [fetchLoading, setFetchLoading] = useState(true);
 
+  // ==================== LOAD CATEGORY ====================
   useEffect(() => {
-    fetchCategories();
-    fetchCategory();
-  }, [documentId]);
+    const fetchCategory = async () => {
+      try {
+        const res = await apiCategory.getById(id);
+        const data = res.data.data || res.data;
 
-  const fetchCategories = async () => {
-    try {
-      const response = await apiCategory.getAll();
-      if (response.data.success) {
-        setCategories(response.data.data);
-      }
-    } catch (error) {
-      console.error('Error fetching categories:', error);
-    }
-  };
-
-  const fetchCategory = async () => {
-    try {
-      const response = await apiCategory.getById(documentId);
-      if (response.data.success) {
-        const category = response.data.data;
         setFormData({
-          name: category.name || '',
-          parent_id: category.parent_id || 0,
-          description: category.description || '',
-          sort_order: category.sort_order || 0,
-          status: category.status !== undefined ? category.status : true
+          name: data.name || "",
+          slug: data.slug || "",
+          parent_id: data.parent_id || 0,
+          description: data.description || "",
+          sort_order: data.sort_order || 0,
+          status: data.status === 1,
+          image: null,
         });
-        
-        // Set image preview if image exists
-        if (category.image) {
-          setImagePreview(`http://127.0.0.1:8000/storage/${category.image}`);
-        }
-      } else {
-        setErrors({ general: 'Không tìm thấy danh mục' });
+
+        if (data.image) setPreview(data.image);
+      } catch (error) {
+        console.error("❌ Error fetching category:", error);
+        alert("Không thể tải dữ liệu danh mục!");
       }
-    } catch (error) {
-      console.error('Error fetching category:', error);
-      setErrors({ general: 'Lỗi khi tải thông tin danh mục' });
-    } finally {
-      setFetchLoading(false);
-    }
-  };
+    };
 
+    const fetchAllCategories = async () => {
+      try {
+        const res = await apiCategory.getAll();
+        setCategories(res.data.data || res.data);
+      } catch (error) {
+        console.error("❌ Error fetching category list:", error);
+      }
+    };
+
+    fetchCategory();
+    fetchAllCategories();
+  }, [id]);
+
+  // ==================== HANDLE CHANGE ====================
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: type === 'checkbox' ? checked : 
-              type === 'number' ? parseInt(value) || 0 : value
-    }));
-  };
+    const { name, value, type, checked, files } = e.target;
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setImage(file);
-      
-      // Create preview
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setImagePreview(e.target.result);
-      };
-      reader.readAsDataURL(file);
+    if (type === "file") {
+      const file = files[0];
+      setFormData((prev) => ({ ...prev, image: file }));
+      if (file) setPreview(URL.createObjectURL(file));
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        [name]:
+          type === "checkbox"
+            ? checked
+            : type === "number"
+            ? parseInt(value) || 0
+            : value,
+      }));
     }
   };
 
-  const removeImage = () => {
-    setImage(null);
-    setImagePreview('');
-  };
-
+  // ==================== HANDLE SUBMIT ====================
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
-    setErrors({});
 
+    if (!formData.name.trim()) {
+      alert("⚠️ Tên danh mục là bắt buộc!");
+      return;
+    }
+
+    setLoading(true);
     try {
       const submitData = new FormData();
-      submitData.append('name', formData.name);
-      submitData.append('parent_id', formData.parent_id);
-      submitData.append('description', formData.description);
-      submitData.append('sort_order', formData.sort_order);
-      submitData.append('status', formData.status ? 1 : 0);
-      
-      if (image) {
-        submitData.append('image', image);
+      submitData.append("name", formData.name);
+      submitData.append(
+        "slug",
+        formData.slug || formData.name.toLowerCase().replace(/\s+/g, "-")
+      );
+      submitData.append("parent_id", formData.parent_id || 0);
+      submitData.append("description", formData.description);
+      submitData.append("sort_order", formData.sort_order);
+      submitData.append("status", formData.status ? 1 : 0);
+
+      if (formData.image) {
+        submitData.append("image", formData.image);
       }
 
-      const response = await apiCategory.update(documentId, submitData);
-      if (response.data.success) {
-        alert('Cập nhật danh mục thành công');
-        navigate('/admin/category');
+      // ✅ Gửi request cập nhật
+      const res = await apiCategory.admin.update(id, submitData);
+
+      if (res.data.success) {
+        alert("✅ Cập nhật danh mục thành công!");
+        navigate("/admin/category");
       } else {
-        setErrors({ general: response.data.message });
+        alert("⚠️ Có lỗi xảy ra khi cập nhật!");
       }
     } catch (error) {
+      console.error("❌ Error updating category:", error);
       if (error.response?.status === 422) {
-        setErrors(error.response.data.errors);
+        const msg =
+          error.response.data?.errors?.name?.[0] ||
+          "⚠️ Dữ liệu không hợp lệ. Vui lòng nhập đủ thông tin bắt buộc.";
+        alert(msg);
+      } else if (error.response?.status === 404) {
+        alert("❌ Không tìm thấy danh mục!");
       } else {
-        setErrors({ general: error.response?.data?.message || 'Lỗi khi cập nhật danh mục' });
+        alert("❌ Lỗi máy chủ! Vui lòng thử lại sau.");
       }
     } finally {
       setLoading(false);
     }
   };
 
-  if (fetchLoading) return <div className="loading">Đang tải thông tin danh mục...</div>;
-
+  // ==================== RENDER FORM ====================
   return (
-    <div className="category-form">
-      <div className="form-header">
-        <h1>Sửa Danh Mục</h1>
-        <button 
-          type="button"
-          onClick={() => navigate('/admin/category')} 
-          className="btn btn-back"
-        >
-          ← Quay Lại Danh Sách
-        </button>
-      </div>
+    <div className="category-edit" style={{ maxWidth: 600, margin: "0 auto" }}>
+      <h2 style={{ marginBottom: 20 }}>✏️ Cập nhật danh mục</h2>
 
-      <form onSubmit={handleSubmit} className="form">
+      <form onSubmit={handleSubmit}>
+        {/* --- Name --- */}
         <div className="form-group">
-          <label htmlFor="name">Tên Danh Mục *</label>
+          <label>Tên danh mục *</label>
           <input
             type="text"
-            id="name"
             name="name"
             value={formData.name}
             onChange={handleChange}
-            className={errors.name ? 'error' : ''}
-            placeholder="Nhập tên danh mục"
+            required
+            style={{ width: "100%", padding: 8 }}
           />
-          {errors.name && <span className="error-text">{errors.name[0]}</span>}
         </div>
 
-        <div className="form-group">
-          <label htmlFor="parent_id">Danh Mục Cha</label>
+        {/* --- Slug --- */}
+        <div className="form-group" style={{ marginTop: 10 }}>
+          <label>Slug</label>
+          <input
+            type="text"
+            name="slug"
+            value={formData.slug}
+            onChange={handleChange}
+            placeholder="Tự động tạo nếu để trống"
+            style={{ width: "100%", padding: 8 }}
+          />
+        </div>
+
+        {/* --- Parent Category --- */}
+        <div className="form-group" style={{ marginTop: 10 }}>
+          <label>Danh mục cha</label>
           <select
-            id="parent_id"
             name="parent_id"
             value={formData.parent_id}
             onChange={handleChange}
+            style={{ width: "100%", padding: 8 }}
           >
-            <option value="0">-- Không có danh mục cha --</option>
+            <option value={0}>-- Không có --</option>
             {categories
-              .filter(cat => cat.id != documentId) // Tránh chọn chính nó làm cha
-              .map(category => (
-                <option key={category.id} value={category.id}>
-                  {category.name}
+              .filter((cat) => cat.id !== parseInt(id))
+              .map((cat) => (
+                <option key={cat.id} value={cat.id}>
+                  {cat.name}
                 </option>
-              ))
-            }
+              ))}
           </select>
         </div>
 
-        <div className="form-group">
-          <label htmlFor="description">Mô Tả</label>
+        {/* --- Description --- */}
+        <div className="form-group" style={{ marginTop: 10 }}>
+          <label>Mô tả</label>
           <textarea
-            id="description"
             name="description"
             value={formData.description}
             onChange={handleChange}
-            rows="4"
-            placeholder="Nhập mô tả cho danh mục"
+            style={{ width: "100%", padding: 8, minHeight: 80 }}
           />
         </div>
 
-        <div className="form-group">
-          <label htmlFor="sort_order">Thứ Tự Sắp Xếp</label>
+        {/* --- Sort Order --- */}
+        <div className="form-group" style={{ marginTop: 10 }}>
+          <label>Thứ tự</label>
           <input
             type="number"
-            id="sort_order"
             name="sort_order"
             value={formData.sort_order}
             onChange={handleChange}
-            min="0"
-            placeholder="Số thứ tự hiển thị"
+            min={0}
+            style={{ width: "100%", padding: 8 }}
           />
         </div>
 
-        <div className="form-group">
-          <label htmlFor="image">Hình Ảnh</label>
-          <input
-            type="file"
-            id="image"
-            name="image"
-            onChange={handleImageChange}
-            accept="image/*"
-          />
-          {errors.image && <span className="error-text">{errors.image[0]}</span>}
-        </div>
-
-        {/* Image Preview */}
-        {(imagePreview || formData.image) && (
-          <div className="form-group">
-            <label>Xem Trước Hình Ảnh:</label>
-            <div className="image-preview-container">
-              <img 
-                src={imagePreview} 
-                alt="Preview" 
-                className="image-preview"
-              />
-              <button 
-                type="button" 
-                onClick={removeImage}
-                className="btn btn-delete btn-sm"
-              >
-                Xóa Ảnh
-              </button>
-            </div>
-          </div>
-        )}
-
-        <div className="form-group checkbox-group">
-          <label>
-            <input
-              type="checkbox"
-              name="status"
-              checked={formData.status}
-              onChange={handleChange}
+        {/* --- Image --- */}
+        <div className="form-group" style={{ marginTop: 10 }}>
+          <label>Ảnh danh mục</label>
+          <input type="file" name="image" onChange={handleChange} />
+          {preview && (
+            <img
+              src={preview}
+              alt="preview"
+              style={{
+                width: 120,
+                borderRadius: 8,
+                marginTop: 10,
+                border: "1px solid #ddd",
+              }}
             />
-            <span className="checkmark"></span>
-            Kích hoạt danh mục
-          </label>
+          )}
         </div>
 
-        {errors.general && (
-          <div className="error-text general-error">
-            {errors.general}
-          </div>
-        )}
-
-        <div className="form-actions">
-          <button 
-            type="button" 
-            onClick={() => navigate('/admin/category')}
-            className="btn btn-secondary"
-          >
-            Hủy
-          </button>
-          <button 
-            type="submit" 
-            disabled={loading}
-            className="btn btn-primary"
-          >
-            {loading ? 'Đang cập nhật...' : 'Cập Nhật Danh Mục'}
-          </button>
+        {/* --- Status --- */}
+        <div className="form-group" style={{ marginTop: 10 }}>
+          <label>Trạng thái</label>
+          <input
+            type="checkbox"
+            name="status"
+            checked={formData.status}
+            onChange={handleChange}
+            style={{ marginLeft: 10 }}
+          />
+          <span style={{ marginLeft: 6 }}>
+            {formData.status ? "Hiển thị" : "Ẩn"}
+          </span>
         </div>
+
+        {/* --- Submit Button --- */}
+        <button
+          type="submit"
+          disabled={loading}
+          style={{
+            marginTop: 20,
+            padding: "8px 20px",
+            backgroundColor: loading ? "#999" : "#007bff",
+            color: "#fff",
+            border: "none",
+            borderRadius: 4,
+            cursor: loading ? "not-allowed" : "pointer",
+          }}
+        >
+          {loading ? "Đang lưu..." : "💾 Lưu thay đổi"}
+        </button>
       </form>
     </div>
   );
-};
-
-export default CategoryEdit;
+}

@@ -8,6 +8,21 @@ function ProductShow() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [quantity, setQuantity] = useState(1);
+  const getImageUrl = (thumbnail) => {
+  if (!thumbnail) return "http://127.0.0.1:8000/images/placeholder.jpg";
+
+  // Nếu đã là URL đầy đủ (có http hoặc https)
+  if (thumbnail.startsWith("http")) return thumbnail;
+
+  // Nếu đường dẫn đã có /uploads ở đầu
+  if (thumbnail.startsWith("/uploads")) {
+    return `http://127.0.0.1:8000${thumbnail}`;
+  }
+
+  // Mặc định: nằm trong thư mục uploads/products
+  return `http://127.0.0.1:8000/uploads/products/${thumbnail}`;
+};
+
 
   useEffect(() => {
     fetchProduct();
@@ -59,10 +74,11 @@ function ProductShow() {
       <div className="product-show">
         <div className="product-image">
           <img
-            src={`http://127.0.0.1:8000/uploads/products/${product.thumbnail}`}
-            alt={product.name}
-            onError={(e) => (e.target.src = "http://127.0.0.1:8000/images/placeholder.jpg")}
-          />
+  src={getImageUrl(product.thumbnail)}
+  alt={product.name}
+  onError={(e) => (e.target.src = "http://127.0.0.1:8000/images/placeholder.jpg")}
+/>
+
         </div>
 
         <div className="product-info">
@@ -76,20 +92,6 @@ function ProductShow() {
           <p><strong>Danh mục ID:</strong> {product.category_id}</p>
           <p><strong>Thương hiệu ID:</strong> {product.brand_id}</p>
           <p><strong>Trạng thái:</strong> {product.status === 1 ? "Hiển thị" : "Ẩn"}</p>
-
-          <div className="quantity-control">
-            <label>Số lượng:</label>
-            <input
-              type="number"
-              min="1"
-              value={quantity}
-              onChange={(e) => setQuantity(Number(e.target.value))}
-            />
-          </div>
-
-          <button onClick={handleAddToCart} className="btn-add-cart">
-            🛒 Thêm vào giỏ hàng
-          </button>
         </div>
       </div>
     </div>

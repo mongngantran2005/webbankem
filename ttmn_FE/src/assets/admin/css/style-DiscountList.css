@@ -290,3 +290,137 @@
     min-width: 100%;
   }
 }
+
+
+/* discount-edit */
+/* ===== Container ===== */
+.discount-edit-container {
+  max-width: 800px;
+  margin: 50px auto;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  padding: 32px;
+  font-family: "Inter", "Segoe UI", sans-serif;
+  animation: fadeIn 0.3s ease;
+}
+
+/* ===== Title ===== */
+.discount-edit-title {
+  text-align: center;
+  font-size: 22px;
+  font-weight: 600;
+  color: #ee4d2d;
+  margin-bottom: 30px;
+}
+
+/* ===== Error Box ===== */
+.discount-edit-error {
+  background: #ffe9e6;
+  color: #d93025;
+  border: 1px solid #f7c2b8;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 15px;
+  margin-bottom: 16px;
+}
+
+/* ===== Form ===== */
+.discount-edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.discount-edit-form label {
+  font-weight: 500;
+  color: #333;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.discount-edit-form input,
+.discount-edit-form select {
+  width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 15px;
+  transition: all 0.2s ease;
+}
+
+.discount-edit-form input:focus,
+.discount-edit-form select:focus {
+  border-color: #ee4d2d;
+  box-shadow: 0 0 0 2px rgba(238, 77, 45, 0.15);
+  outline: none;
+}
+
+/* ===== Date Row ===== */
+.date-group {
+  display: flex;
+  gap: 16px;
+}
+
+.date-group > div {
+  flex: 1;
+}
+
+/* ===== Buttons ===== */
+.discount-edit-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 25px;
+}
+
+.btn-cancel {
+  background: #f5f5f5;
+  color: #333;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 22px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-cancel:hover {
+  background: #e0e0e0;
+}
+
+.btn-save {
+  background: #ee4d2d;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 24px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+.btn-save:hover {
+  background: #d93a1e;
+  transform: translateY(-1px);
+}
+
+/* ===== Loading ===== */
+.loading-text {
+  text-align: center;
+  color: #555;
+  padding: 20px 0;
+  font-size: 16px;
+}
+
+/* ===== Animation ===== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

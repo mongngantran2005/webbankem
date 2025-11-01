@@ -13,6 +13,10 @@ use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\DiscountController;
 use App\Http\Controllers\Api\UserDiscountController;
 use App\Http\Controllers\Api\ProductReviewReplyController;
+use App\Http\Controllers\Api\MomoController;
+use App\Http\Controllers\Api\ImportController;
+use App\Http\Controllers\Api\ChatController;
+use App\Http\Controllers\Api\BannerController;
 use Illuminate\Http\Request;
 
 Route::post('/checkout', [OrderController::class, 'checkout']);
@@ -77,6 +81,7 @@ Route::prefix('categories')->group(function () {
         Route::get('/all', [CategoryController::class, 'adminIndex']);
         Route::get('/dropdown', [CategoryController::class, 'getAllForDropdown']);
         Route::get('/trash', [CategoryController::class, 'trash']);
+        Route::get('/{id}', [CategoryController::class, 'adminShow']);
         Route::post('/', [CategoryController::class, 'store']);
         Route::put('/{id}', [CategoryController::class, 'update']);
         Route::delete('/{id}', [CategoryController::class, 'destroy']);
@@ -198,13 +203,37 @@ Route::post('/reviews/{reviewId}/images', [ProductReviewController::class, 'uplo
 Route::get('/admin/statistics/summary', [DashboardController::class, 'summary']);
 Route::get('/admin/statistics/monthly-revenue', [DashboardController::class, 'monthlyRevenue']);
 
-// Discounts
-Route::get('/discounts', [DiscountController::class, 'index']);
-Route::post('/discounts', [DiscountController::class, 'store']);
-Route::put('/discounts/{id}', [DiscountController::class, 'update']);
-Route::delete('/discounts/{id}', [DiscountController::class, 'destroy']);
-Route::get('/discounts/active', [DiscountController::class, 'active']);
-Route::post('/discounts/apply', [DiscountController::class, 'apply']);
+// 🟢 Discounts
+Route::get('/discounts', [DiscountController::class, 'index']); // Lấy tất cả
+Route::get('/discounts/active', [DiscountController::class, 'active']); // Mã đang hoạt động
+Route::post('/discounts/apply', [DiscountController::class, 'apply']); // Kiểm tra khi nhập mã
+Route::get('/discounts/user/{userId}', [DiscountController::class, 'getUserDiscounts']); // Lấy theo user (nếu có)
+Route::get('/discounts/{id}', [DiscountController::class, 'show']); // Lấy chi tiết 1 mã
+Route::post('/discounts', [DiscountController::class, 'store']); // Thêm mới
+Route::put('/discounts/{id}', [DiscountController::class, 'update']); // Cập nhật
+Route::delete('/discounts/{id}', [DiscountController::class, 'destroy']); // Xóa
+
 //Product ReviewReply
 Route::post('/reviews/{review_id}/reply', [ProductReviewReplyController::class, 'store']);
 
+// Momo
+Route::post('/payment/momo', [MomoController::class, 'paymentMoMo']);
+Route::post('/payment/momo/notify', [MomoController::class, 'notify']);
+// Import
+Route::post('/products/import', [ImportController::class, 'importProducts']);
+// Chat
+Route::post('/chat', [ChatController::class, 'chat']);
+// Banner
+Route::prefix('banners')->group(function () {
+    // USER
+    Route::get('/slideshow', [BannerController::class, 'index']);
+    Route::get('/popup', [BannerController::class, 'getPopup']);
+
+    // ADMIN
+    Route::prefix('admin')->group(function () {
+        Route::get('/all', [BannerController::class, 'indexAll']);
+        Route::post('/', [BannerController::class, 'store']);
+        Route::put('/{id}', [BannerController::class, 'update']);
+        Route::delete('/{id}', [BannerController::class, 'destroy']);
+    });
+});

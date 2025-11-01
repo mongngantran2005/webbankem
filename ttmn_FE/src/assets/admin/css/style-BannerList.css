@@ -1,0 +1,135 @@
+/* --- Tổng thể --- */
+.bannerlist-container {
+  padding: 24px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.bannerlist-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.bannerlist-header h2 {
+  font-size: 20px;
+  font-weight: 600;
+  color: #333;
+}
+
+.bannerlist-btn-add {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background-color: #4caf50;
+  color: #fff;
+  padding: 8px 14px;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+
+.bannerlist-btn-add:hover {
+  background-color: #43a047;
+}
+
+/* --- Table --- */
+.bannerlist-table-wrapper {
+  overflow-x: auto;
+}
+
+.bannerlist-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+}
+
+.bannerlist-table th,
+.bannerlist-table td {
+  border: 1px solid #e0e0e0;
+  padding: 10px;
+  text-align: center;
+}
+
+.bannerlist-table th {
+  background-color: #f7f7f7;
+  font-weight: 600;
+  color: #333;
+}
+
+/* --- Ảnh --- */
+.bannerlist-img {
+  width: 90px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.bannerlist-noimage {
+  color: #aaa;
+  font-style: italic;
+}
+
+/* --- Link --- */
+.bannerlist-link {
+  color: #1976d2;
+  text-decoration: none;
+}
+
+.bannerlist-link:hover {
+  text-decoration: underline;
+}
+
+/* --- Trạng thái --- */
+.bannerlist-status-active {
+  color: #2e7d32;
+  font-weight: 600;
+}
+
+.bannerlist-status-hide {
+  color: #d32f2f;
+  font-weight: 600;
+}
+
+/* --- Nút hành động --- */
+.bannerlist-action-cell {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.bannerlist-btn-edit,
+.bannerlist-btn-delete {
+  border: none;
+  background: none;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.bannerlist-btn-edit {
+  color: #1976d2;
+}
+
+.bannerlist-btn-delete {
+  color: #d32f2f;
+}
+
+.bannerlist-btn-edit:hover,
+.bannerlist-btn-delete:hover {
+  transform: scale(1.1);
+}
+
+/* --- Trạng thái tải / lỗi / trống --- */
+.bannerlist-loading,
+.bannerlist-error,
+.bannerlist-nodata {
+  text-align: center;
+  padding: 20px;
+  color: #666;
+}
+
+.bannerlist-error {
+  color: #d32f2f;
+}

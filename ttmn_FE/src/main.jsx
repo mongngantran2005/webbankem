@@ -10,11 +10,11 @@ import "./assets/shop/css/style-footer.css";
 import "./assets/shop/css/style-home.css";
 import "./assets/shop/css/style-products.css";
 import "./assets/shop/css/style-account.css";
-// import "./assets/shop/css/style-product-detail.css";
+import "./assets/shop/css/style-chat-box.css";
 // import "./assets/shop/css/style-menu.css";
 // import "./assets/shop/css/style-log.css";
 import "./assets/shop/css/style-cart.css";
-// import "./assets/shop/css/style-product-bycat.css";
+import "./assets/shop/css/style-shop-layout.css";
 import "./assets/shop/css/style-register.css";
 import "./assets/shop/css/style-about.css";
 
@@ -33,6 +33,8 @@ import "./assets/admin/css/style-OrderDetail.css";
 import "./assets/admin/css/style-OrderByUser.css";
 import "./assets/admin/css/style-DiscountList.css";
 import "./assets/admin/css/style-reviewList.css";
+import "./assets/admin/css/style-BannerList.css";
+import "./assets/admin/css/style-BannerAdd.css";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ShopLayout from "./components/shop/ShopLayout.jsx";

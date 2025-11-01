@@ -7,6 +7,14 @@ function Cart() {
   const [userDiscounts, setUserDiscounts] = useState([]);
   const [selectedDiscount, setSelectedDiscount] = useState(null);
   const navigate = useNavigate();
+  // ✅ Hàm xử lý đường dẫn ảnh an toàn
+const getImageUrl = (thumbnail) => {
+  if (!thumbnail) return "http://127.0.0.1:8000/images/placeholder.jpg";
+  if (thumbnail.startsWith("http")) return thumbnail;
+  if (thumbnail.startsWith("/uploads/")) return `http://127.0.0.1:8000${thumbnail}`;
+  return `http://127.0.0.1:8000/uploads/products/${thumbnail}`;
+};
+
 
   // ✅ Lấy key giỏ hàng theo user
   const getCartKey = () => {
@@ -27,6 +35,7 @@ function Cart() {
     localStorage.setItem(key, JSON.stringify(updated));
     setCartItems(updated);
   };
+  
 
   // ✅ Cập nhật số lượng
   const updateQuantity = (id, qty) => {
@@ -53,23 +62,34 @@ function Cart() {
   };
 
   // ✅ Lấy danh sách mã giảm giá của user
-  useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("user"));
-    if (!user) return;
+useEffect(() => {
+  const user = JSON.parse(localStorage.getItem("user"));
+  if (!user) return;
 
-    apiDiscount
-      .getUserDiscounts(user.id)
-      .then((res) => {
-        setUserDiscounts(res.data.data || []);
-      })
-      .catch((err) => {
-        console.error("❌ Lỗi khi lấy mã giảm giá:", err);
-        if (err.response?.status === 401) {
-          alert("Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại!");
-          navigate("/login");
-        }
-      });
-  }, []);
+  apiDiscount
+    .getUserDiscounts(user.id)
+    .then((res) => {
+      console.log("✅ Kết quả API getUserDiscounts:", res);
+
+      // ✅ Kiểm tra cấu trúc dữ liệu trước khi truy cập
+const discounts = res;
+      if (Array.isArray(discounts)) {
+        setUserDiscounts(discounts);
+      } else {
+        console.warn("⚠️ API không trả về dạng { data: [...] }");
+        setUserDiscounts([]);
+      }
+    })
+    .catch((err) => {
+      console.error("❌ Lỗi khi lấy mã giảm giá:", err);
+      setUserDiscounts([]); // Đảm bảo không crash FE
+      if (err.response?.status === 401) {
+        alert("Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại!");
+        navigate("/login");
+      }
+    });
+}, []);
+
 
   // ✅ Áp dụng mã giảm giá
   const applyDiscount = (discount) => {
@@ -158,16 +178,20 @@ function Cart() {
                 <tr key={item.id}>
                   <td>
                     <img
-                      src={`http://127.0.0.1:8000/uploads/products/${item.thumbnail}`}
-                      alt={item.name}
-                      className="cart-img"
-                      style={{
-                        width: "60px",
-                        height: "60px",
-                        objectFit: "cover",
-                        borderRadius: "6px",
-                      }}
-                    />
+  src={getImageUrl(item.thumbnail)}
+  alt={item.name}
+  className="cart-img"
+  style={{
+    width: "60px",
+    height: "60px",
+    objectFit: "cover",
+    borderRadius: "6px",
+  }}
+  onError={(e) => {
+    e.target.src = "http://127.0.0.1:8000/images/placeholder.jpg";
+  }}
+/>
+
                   </td>
                   <td>{item.name}</td>
                   <td className="text-danger fw-bold">
